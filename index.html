@@ -9,12 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #000000c8;
-            --ticker-bg: rgba(0, 0, 0, 0.57);
+            /* Modern Vibrant Palette */
+            --primary-color: #4361ee; /* Bright Blue */
+            --secondary-color: #3f37c9; /* Deep Indigo */
+            --accent-color: #f72585; /* Vibrant Pink/Red */
+            --ticker-bg: #000000; /* Black */
             --ticker-text: #ffffff;
-            --ticker-height: 44px;
-            --twitter-bg: #f7f9f9;
-            --twitter-hover: #eff3f4;
+            --ticker-height: 40px; /* Slightly smaller for top bar */
+            --twitter-bg: #f1f5f9; /* Light Slate structure */
+            --twitter-hover: #e2e8f0;
             --mobile-header-height: 60px;
         }
 
@@ -22,229 +25,211 @@
             font-family: 'Poppins', sans-serif;
             background-color: #fff;
             margin: 0;
-            padding-bottom: var(--ticker-height);
+            padding-bottom: 0; /* Removed ticker padding */
             overflow-x: hidden;
         }
 
         a { text-decoration: none !important; outline: none !important; border: none !important; color: inherit; }
         .btn:focus, .form-control:focus, input:focus { box-shadow: none !important; border: none !important; outline: none !important; }
         
-        /* --- Header Styles --- */
+        /* --- User Profile & Common Styles --- */
+        .user-profile { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 5px 10px; border-radius: 8px; transition: 0.2s; }
+        .user-profile:hover { background-color: #f8f9fa; }
+        
+        /* --- Enhanced Dropdown Styles --- */
+        .dropdown-menu {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+            padding: 8px;
+            margin-top: 15px !important; /* Proper spacing */
+            display: none;
+        }
+        
+        /* Animation when shown */
+        .dropdown-menu.show {
+            display: block;
+            animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(15px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .dropdown-item {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.92rem;
+            color: #444;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .dropdown-item:last-child { margin-bottom: 0; }
+        
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
+            color: var(--primary-color);
+            transform: translateX(3px);
+        }
+        
+        .dropdown-toggle::after { content: none; }
+
+        /* Specific Profile Menu Styling */
+        .profile-menu-custom {
+            min-width: 260px;
+            padding: 10px;
+            margin-top: 10px !important;
+        }
+        
+        /* Specific More Menu Styling */
+        .more-menu-custom {
+            min-width: 220px;
+            margin-top: 25px !important;
+        }
+
+        /* Saved Pill Custom Style */
+
+        /* Saved Pill Custom Style */
+        .saved-pill {
+            background-color: #fff0f3; /* Soft Pink Bg */
+            color: #e63946; /* Nice Red */
+            border: 1px solid #ffccd5;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .saved-pill:hover {
+            background-color: #e63946;
+            color: #ffffff;
+            border-color: #e63946;
+        }
+        .saved-pill:hover .badge-count { background: rgba(255,255,255,0.2) !important; color: #fff !important; }
+
+        /* --- Refined Header Styles --- */
         .main-header {
             position: sticky;
             top: 0;
             z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.95); /* More opacity for mobile */
+            background: #ffffffea;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .main-header.scrolled {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            padding-top: 8px;
-            padding-bottom: 8px;
-        }
-        
-        /* Mobile Toggle Button */
-        .mobile-menu-toggle {
-            display: none;
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        /* Offcanvas Menu Styles (Mobile) */
-        .offcanvas-body .nav-link {
-            font-size: 18px;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .offcanvas-body .action-icons-mobile {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-            font-size: 24px;
-        }
-
-        @media (max-width: 991px) {
-            .mobile-menu-toggle { display: block; }
-            .header-utilities, .quick-links, .nav.d-lg-flex { display: none !important; }
-            /* Show profile/search only in offcanvas or simplified header */
-            .navbar-brand { font-size: 20px; margin-right: 0; }
-        }
-        
-        /* Header Utilities Section */
-        .header-utilities {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-right: 20px;
-            font-size: 13px;
-            color: #555;
-            font-weight: 500;
-        }
-        .utility-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .weather-info i { color: #f39c12; }
-        .action-icon {
-            font-size: 20px;
-            cursor: pointer;
-            color: #333;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-        }
-        .action-icon:hover { color: var(--primary-color); background-color: #f3f4f6; }
-
-        .quick-links {
-            padding-top: 10px;
-            border-top: 1px solid #f0f0f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+        }
+
+        .header-top {
+            padding: 12px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .header-bottom {
+            padding: 0;
+            background-color: transparent;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+            margin: 0;
+            text-decoration: none !important;
         }
         
-        .main-header.scrolled .quick-links { padding-top: 8px; opacity: 0.9; }
-        
-        .quick-links-left {
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-trigger-pill {
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .quick-link {
+            padding: 8px 16px;
+            background-color: #f7f9fa;
+            border-radius: 50px;
             color: #666;
             font-size: 14px;
-            font-weight: 500;
-            padding: 6px 12px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            display: inline-block;
-        }
-        
-        .quick-link:hover {
-            color: var(--primary-color);
-            background-color: #fff5f2;
-            transform: translateY(-2px);
-        }
-        
-        /* Dropdowns & More Button */
-        .quick-links-more { position: relative; display: inline-block; }
-        .more-btn {
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 6px 12px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
             cursor: pointer;
-            border: none;
-            background: none;
+            transition: all 0.2s ease;
+            min-width: 200px;
         }
-        .more-btn:hover { color: var(--primary-color); background-color: #fff5f2; transform: translateY(-2px); }
-        .more-btn i { font-size: 16px; transition: transform 0.3s ease; }
-        .quick-links-more:hover .more-btn i { transform: rotate(180deg); }
-
-        .more-dropdown {
-            position: absolute;
-            top: calc(100% + 10px);
-            left: 0;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 12px 48px rgba(0,0,0,0.15);
-            padding: 12px 8px;
-            min-width: 240px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-15px) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 1000;
-            border: 1px solid rgba(0,0,0,0.06);
-            backdrop-filter: blur(10px);
+        .search-trigger-pill:hover {
+            background-color: #edf0f2;
+            color: var(--primary-color);
         }
 
-        .more-dropdown::before {
-            content: '';
-            position: absolute;
-            top: -8px; left: 20px;
-            width: 16px; height: 16px;
-            background: white;
-            border-left: 1px solid rgba(0,0,0,0.06);
-            border-top: 1px solid rgba(0,0,0,0.06);
-            transform: rotate(45deg);
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start; /* Aligned left/start */
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 1rem;
+            background-color: transparent;
         }
-
-        .quick-links-more:hover .more-dropdown { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-        .more-dropdown .quick-link {
-            display: block; padding: 12px 16px; margin: 4px 0; border-radius: 10px;
-            white-space: nowrap; position: relative; overflow: hidden; opacity: 0; animation: fadeInUp 0.4s ease forwards;
-        }
-        .more-dropdown .quick-link:nth-child(1) { animation-delay: 0.05s; }
-        .more-dropdown .quick-link:nth-child(2) { animation-delay: 0.1s; }
-        .more-dropdown .quick-link:nth-child(3) { animation-delay: 0.15s; }
-
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .more-dropdown .quick-link::before {
-            content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px;
-            background: linear-gradient(to bottom, var(--primary-color), #ff8a65);
-            transform: scaleY(0); transition: transform 0.3s ease;
-        }
-        .more-dropdown .quick-link:hover::before { transform: scaleY(1); }
-        .more-dropdown .quick-link:hover { background: linear-gradient(to right, #fff5f2, #fff); transform: translateX(6px); padding-left: 20px; }
-
-        /* Social Icons & Profile Wrapper */
-        .bottom-right-utils {
-             display: flex;
-             align-items: center;
-             gap: 15px;
-        }
-
-        .social-icons { display: flex; align-items: center; gap: 8px; padding-left: 0; }
-        .social-icon {
-            position: relative; width: 36px; height: 36px; border-radius: 8px; background-color: #f3f4f6;
-            display: flex; align-items: center; justify-content: center; color: #666; font-size: 18px;
-            transition: all 0.3s ease; cursor: pointer; text-decoration: none;
-        }
-        .social-icon:hover { background-color: var(--primary-color); color: white; transform: translateY(-3px); }
         
-        /* Navbar Elements */
-        .navbar-brand { font-weight: 700; font-size: 24px; color: var(--primary-color); margin-right: 30px; }
-        .navbar-brand span { color: #333; }
-        .nav-link { color: #555 !important; font-weight: 500; font-size: 15px; margin-right: 15px; display: flex; align-items: center; gap: 5px; cursor: pointer; }
-        .dropdown-toggle::after { content: none; }
-        
-        /* User Profile */
-        .user-profile { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 5px 10px; border-radius: 8px; transition: 0.2s; border-left: 1px solid #e5e7eb; padding-left: 15px; margin-left: 5px; }
-        .user-profile:hover { background-color: #f8f9fa; }
-        .user-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
-        .user-name { font-size: 14px; font-weight: 600; color: #333; }
-        
-        .bookmark-btn {
-            background-color: #f3f4f6; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-            border-radius: 10px; color: #333; margin-left: 10px; font-size: 18px; border: none; cursor: pointer; transition: all 0.3s ease;
+        /* Hide scrollbar */
+        .nav-scroller::-webkit-scrollbar { display: none; }
+        .nav-scroller { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            padding: 14px 0;
+            
         }
-        .bookmark-btn:hover { background-color: var(--primary-color); color: white; transform: translateY(-2px); }
 
-        .dropdown-menu { border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.12); border-radius: 12px; margin-top: 10px; padding: 8px; min-width: 180px; }
-        .dropdown-item { padding: 10px 16px; font-size: 14px; font-weight: 500; border-radius: 8px; color: #333; display: flex; align-items: center; gap: 8px; }
-        .dropdown-item:hover { background-color: #f3f4f6; color: var(--primary-color); transform: translateX(3px); }
+        .nav-link-item {
+            font-size: 15px;
+            font-weight: 600;
+            color: #555;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.2s;
+            text-decoration: none !important;
+        }
+        
+        .nav-link-item:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-icon-link {
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            color: #666;
+            transition: 0.2s;
+            background: #ffffffea; /* Semi-transparent */
+            backdrop-filter: blur(5px);
+        }
+        .nav-icon-link:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
 
+        .utility-divider {
+             height: 24px;
+             width: 1px;
+             background-color: #e5e7eb;
+             margin: 0 5px;
+        }
+
+        /* Mobile tweaks */
+        @media (max-width: 991px) {
+            .header-top { padding: 10px 0; border: none; }
+            .header-bottom { display: none; }
+            .main-header { padding-bottom: 5px; }
+        }
+        
         /* --- Hero Section --- */
         .hero-section { padding: 30px 0; background-color: #fff; }
         .hero-grid-item { position: relative; border-radius: 8px; overflow: hidden; display: block; width: 100%; text-decoration: none; transition: transform 0.3s ease; }
@@ -384,42 +369,35 @@
 
         /* --- News Ticker Styles --- */
         .modern-ticker-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            position: relative; /* Changed from fixed */
             width: 100%;
             height: var(--ticker-height);
             background-color: var(--ticker-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             color: var(--ticker-text);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 1050; /* Higher than header z-index */
-            backdrop-filter: blur(8px);
-            border-top: 1px solid rgba(255,255,255,0.1);
-            transition: transform 0.3s ease-in-out;
+            z-index: 1051; /* Keep high */
+            font-size: 13px;
         }
-        .modern-ticker-container.closed { transform: translateY(100%); }
+        .modern-ticker-container.closed { display: none; } /* adjusted for relative */
         
         .ticker-wrapper { display: flex; align-items: center; flex-grow: 1; overflow: hidden; height: 100%; }
         
         .ticker-label {
-            display: flex; align-items: center; padding: 0 16px; height: 100%;
-            font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px; text-transform: uppercase;
-            background-color: var(--primary-color);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            display: flex; align-items: center; padding: 0 40px 0 20px; height: 100%;
+            font-weight: 800; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase;
+            background: linear-gradient(135deg, #ff0000 0%, #b00000 100%);
+            color: #fff;
+            clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
         }
-        .label-icon::before { content: "🔥"; margin-right: 6px; }
+        /* Icon removed in favor of direct HTML icon */
         
-        .ticker-headlines-container { flex-grow: 1; position: relative; height: 100%; margin-left: 16px; overflow: hidden; }
+        .ticker-headlines-container { flex-grow: 1; position: relative; height: 100%; margin-left: 10px; overflow: hidden; }
         
         .ticker-headline {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; align-items: center; font-size: 0.9rem; font-weight: 500;
+            display: flex; align-items: center; font-size: 0.85rem; font-weight: 500;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
@@ -438,25 +416,25 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 50vh;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-20px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(-20px) scale(0.98);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
         .search-overlay.active {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .search-overlay-close {
@@ -507,6 +485,11 @@
         .search-overlay.active .overlay-search-desc { opacity: 1; transform: translateY(0); }
 
         /* Animation for Offcanvas Items */
+        .offcanvas {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
         .offcanvas.show .nav-link { animation: slideIn 0.4s forwards; opacity: 0; transform: translateX(-20px); }
         .offcanvas.show .nav-link:nth-child(1) { animation-delay: 0.1s; }
         .offcanvas.show .nav-link:nth-child(2) { animation-delay: 0.2s; }
@@ -515,6 +498,90 @@
         .offcanvas.show .nav-link:nth-child(5) { animation-delay: 0.5s; }
         
         @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+        /* --- Social Expandable Styles --- */
+        .social-group-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        
+        .extra-icons-container {
+            display: flex;
+            align-items: center;
+            gap: 8px; 
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy expand */
+            transform: translateX(20px);
+        }
+        
+        .social-group-wrapper.active .extra-icons-container {
+            max-width: 150px; 
+            opacity: 1;
+            transform: translateX(0);
+            margin-right: 8px;
+        }
+
+        .social-expand-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            border: none;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 8px;
+        }
+        .social-expand-btn:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        .social-expand-btn i {
+            transition: transform 0.3s ease;
+        }
+        
+        /* Rotate arrow when active */
+        .social-group-wrapper.active .social-expand-btn i {
+            transform: rotate(180deg);
+        }
+
+        /* --- NEW SECTION STYLES --- */
+        .section-padding { padding: 60px 0; }
+        .bg-soft { background-color: #f8f9fa; }
+        .bg-dark-custom { background-color: #1a1a1a; color: #fff; }
+        
+        .section-title-wrapper { margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .section-title { font-size: 24px; font-weight: 800; position: relative; margin: 0; }
+        .section-title::after { content: ""; position: absolute; bottom: -17px; left: 0; width: 60px; height: 4px; background-color: var(--primary-color); border-radius: 2px; }
+        .bg-dark-custom .section-title-wrapper { border-color: #333; }
+        
+        /* Card Styles */
+        .article-card { transition: transform 0.3s ease; height: 100%; display: flex; flex-direction: column; }
+        .article-card:hover { transform: translateY(-5px); }
+        .article-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
+        
+        .article-title { font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; color: inherit; }
+        .article-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .bg-dark-custom .article-title { color: #fff; }
+        .bg-dark-custom .article-desc { color: #aaa; }
+        
+        .article-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 10px; border-top: 1px solid #eee; font-size: 12px; color: #888; }
+        .bg-dark-custom .article-footer { border-color: #333; color: #777; }
+        
+        .card-horizontal { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
+        .card-horizontal img { width: 140px; height: 100px; object-fit: cover; border-radius: 10px; flex-shrink: 0; margin: 0; }
+        .card-horizontal .content { flex-grow: 1; }
+        
+        .card-overlay-style { position: relative; height: 400px; border-radius: 16px; overflow: hidden; display: block; color: white; }
+        .card-overlay-style img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card-overlay-style:hover img { transform: scale(1.05); }
+        .card-overlay-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 25px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); }
+        .card-overlay-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; opacity: 0.8; }
 
     </style>
 </head>
@@ -530,104 +597,98 @@
     </div>
 
     <!-- MAIN HEADER -->
-    <header class="main-header py-3 border-bottom">
-        <div class="container-fluid px-3 px-lg-4">
-            <!-- Top Section: Brand, Mobile Toggle, Utilities -->
-            <div class="d-flex align-items-center justify-content-between">
-                
-                <!-- Brand & Mobile Toggle Wrapper -->
-                <div class="d-flex align-items-center">
-                    <i class="ri-menu-2-line mobile-menu-toggle me-3" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"></i>
-                    <a class="navbar-brand" href="#">oreix.news</a>
-                </div>
-
-                <!-- Desktop Nav -->
-                <div class="d-none d-lg-flex align-items-center flex-grow-1">
-                    <ul class="nav">
-                        <li class="nav-item"><a class="nav-link" href="#"><i class="ri-phone-line"></i> Contact Us</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#"><i class="ri-information-line"></i> About Us</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Right Side Actions -->
-                <div class="d-flex align-items-center">
-                    <!-- Desktop Utilities -->
-                    <div class="header-utilities d-none d-xl-flex">
-                        <div class="utility-item weather-info me-3" title="Cairo, Egypt">
-                            <i class="ri-sun-cloudy-line"></i> <span>24°C</span>
-                        </div>
-                        <div class="utility-item date-time-info me-3">
-                            <i class="ri-calendar-line"></i> <span id="currentDate"></span>
-                            <span class="mx-1">|</span>
-                            <i class="ri-time-line"></i> <span id="currentTime"></span>
-                        </div>
-                        <div class="utility-item actions">
-                             <i class="ri-search-line action-icon me-2" id="searchTrigger" title="Search"></i>
-                             <i class="ri-moon-line action-icon me-2" title="Toggle Theme"></i>
-                             <i class="ri-translate-2 action-icon" title="Translate"></i>
-                        </div>
-                    </div>
-
-                    <!-- Mobile Search Trigger (Visible only on mobile/tablet) -->
-                    <div class="d-flex d-xl-none me-2">
-                         <i class="ri-search-line action-icon" id="searchTriggerMobile" style="font-size: 22px;"></i>
-                    </div>
-
-                    <button class="bookmark-btn" title="Saved Articles"><i class="ri-bookmark-line"></i></button>
-                    
-                    <!-- User Profile (Desktop) -->
-                    <div class="dropdown d-none d-md-block">
-                        <div class="user-profile dropdown-toggle" role="button">
-                            <img src="https://i.pravatar.cc/150?img=11" alt="User" class="user-avatar">
-                            <span class="fw-medium d-none d-sm-block text-dark user-name">Youssef Enad</span>
-                            <i class="ri-arrow-down-s-line text-dark"></i>
-                        </div>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"><i class="ri-user-line"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="ri-settings-3-line"></i> Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#"><i class="ri-logout-box-line"></i> Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <header class="main-header">
+        <div class="container-fluid px-lg-5"> <!-- Wider container -->
             
-            <!-- Bottom Section: Quick Links (Desktop Only) -->
-            <div class="quick-links mt-3 d-none d-lg-flex align-items-center">
-                <div class="quick-links-left">
-                    <a href="#" class="quick-link">Home</a>
-                    <a href="#" class="quick-link">General News</a>
-                    <a href="#" class="quick-link">Real Estate</a>
-                    <a href="#" class="quick-link">Economy</a>
-                    <a href="#" class="quick-link">Banks & Stock</a>
-                    <a href="#" class="quick-link">Technology</a>
-                    <div class="quick-links-more">
-                        <button class="more-btn">More <i class="ri-arrow-down-s-line"></i></button>
-                        <div class="more-dropdown">
-                            <a href="#" class="quick-link">Reports</a>
-                            <a href="#" class="quick-link">Companies</a>
-                            <a href="#" class="quick-link">Energy</a>
+            <!-- Top Row: Brand, Search/Actions, Profile -->
+            <div class="header-top">
+                <!-- Left: Mobile Toggle & Brand -->
+                <div class="d-flex align-items-center gap-3">
+                    <i class="ri-menu-2-line mobile-menu-toggle d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"></i>
+                    <a class="navbar-brand" href="#">oreix<span style="color:var(--primary-color)">.news</span></a>
+                    
+                    <!-- Date/Weather (Desktop) -->
+                    <div class="d-none d-xl-flex align-items-center gap-4 ms-4 text-muted" style="font-size: 13px; font-weight: 500;">
+                         <div class="d-flex align-items-center gap-2">
+                             <i class="ri-sun-cloudy-line text-warning"></i> 24°C, Cairo
+                         </div>
+                         <div class="utility-divider"></div>
+                         <div class="d-flex align-items-center gap-2">
+                             <i class="ri-calendar-line"></i> <span id="currentDate2">Tuesday, Jan 13</span>
                          </div>
                     </div>
                 </div>
 
-                <!-- Social Icons Desktop -->
-                <div class="bottom-right-utils">
-                    <div class="social-icons">
-                        <a href="#" class="social-icon"><i class="ri-facebook-fill"></i></a>
-                        <a href="#" class="social-icon"><i class="ri-twitter-x-fill"></i></a>
-                        <a href="#" class="social-icon"><i class="ri-threads-fill"></i></a>
-                        <a href="#" class="social-icon"><i class="ri-instagram-line"></i></a>
+                <!-- Right: Actions -->
+                <div class="header-actions">
+                    
+                    <!-- Search Pill -->
+                    <div class="search-trigger-pill d-none d-md-flex" id="searchTrigger">
+                        <i class="ri-search-line"></i>
+                        <span>Search news...</span>
                     </div>
+                    
+                    <!-- Icons -->
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-link p-0 text-dark d-md-none me-2 text-decoration-none" id="searchTriggerMobile"><i class="ri-search-line fs-5"></i></button>
+                        
+                        <a href="#" class="saved-pill d-flex align-items-center gap-2 text-decoration-none me-3 px-3 py-2 rounded-pill">
+                             <i class="ri-heart-line"></i>
+                             <span class="fw-bold" style="font-size: 13px;">Saved</span>
+                             <span class="badge-count badge bg-white text-danger shadow-sm rounded-pill border border-danger-subtle" style="font-size: 11px; padding: 4px 8px;">5</span>
+                        </a>
+
+                        <button class="btn btn-link p-0 text-dark text-decoration-none"><i class="ri-moon-line fs-5"></i></button>
+                    </div>
+
+                    <div class="utility-divider d-none d-sm-block"></div>
+
+                    <!-- User Profile -->
+                    <a href="#" class="d-flex align-items-center gap-2 text-decoration-none text-dark user-profile">
+                        <img src="https://i.pravatar.cc/150?img=11" alt="User" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;">
+                        <div class="d-none d-lg-block text-start" style="line-height: 1.2;">
+                            <div class="fw-bold" style="font-size: 14px;">Youssef Enad</div>
+                        </div>
+                    </a>
                 </div>
             </div>
+
+            <!-- Bottom Row: Navigation (Desktop) -->
+            <div class="header-bottom d-none d-lg-block">
+                <div class="d-flex align-items-center justify-content-between">
+                     <nav class="nav-scroller me-auto">
+                         <div class="nav-links">
+                             <a href="#" class="nav-link-item">Home</a>
+                             <a href="#" class="nav-link-item">General News</a>
+                             <a href="#" class="nav-link-item">Real Estate</a>
+                             <a href="#" class="nav-link-item">Economy</a>
+                             <a href="#" class="nav-link-item">Banks & Stock</a>
+                             <a href="#" class="nav-link-item">Technology</a>
+                             <a href="#" class="nav-link-item">Energy</a>
+                             <a href="#" class="nav-link-item">Reports</a>
+                             <a href="#" class="nav-link-item">Companies</a>
+                             <a href="#" class="nav-link-item">Politics</a>
+                             <a href="#" class="nav-link-item">Opinion</a>
+                             <a href="#" class="nav-link-item">Environment</a>
+                         </div>
+                     </nav>
+                     
+                     <div class="d-flex align-items-center gap-2">
+                        <a href="#" class="nav-icon-link"><i class="ri-facebook-fill fs-6"></i></a>
+                        <a href="#" class="nav-icon-link"><i class="ri-twitter-x-fill fs-6"></i></a>
+                        <a href="#" class="nav-icon-link"><i class="ri-linkedin-fill fs-6"></i></a>
+                        <a href="#" class="nav-icon-link"><i class="ri-instagram-line fs-6"></i></a>
+                     </div>
+                </div>
+            </div>
+            
         </div>
     </header>
 
     <!-- MOBILE OFFCANVAS MENU -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title fw-bold" id="mobileMenuLabel" style="color: var(--primary-color);">oreix.news</h5>
+            <h5 class="offcanvas-title fw-bold" id="mobileMenuLabel">oreix.news</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body d-flex flex-column">
@@ -640,13 +701,19 @@
                  </div>
             </div>
 
-            <nav class="nav flex-column mb-auto">
-                <a class="nav-link text-dark" href="#"><i class="ri-home-4-line me-2"></i> Home</a>
-                <a class="nav-link text-dark" href="#"><i class="ri-newspaper-line me-2"></i> General News</a>
-                <a class="nav-link text-dark" href="#"><i class="ri-building-line me-2"></i> Real Estate</a>
-                <a class="nav-link text-dark" href="#"><i class="ri-line-chart-line me-2"></i> Economy</a>
-                <a class="nav-link text-dark" href="#"><i class="ri-cpu-line me-2"></i> Technology</a>
-                <a class="nav-link text-dark" href="#"><i class="ri-more-fill me-2"></i> More Sections</a>
+            <nav class="nav flex-column mb-auto overflow-auto" style="max-height: calc(100vh - 250px);">
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-home-4-line me-2"></i> Home</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-newspaper-line me-2"></i> General News</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-building-line me-2"></i> Real Estate</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-line-chart-line me-2"></i> Economy</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-bank-line me-2"></i> Banks & Stock</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-cpu-line me-2"></i> Technology</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-flashlight-line me-2"></i> Energy</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-file-list-3-line me-2"></i> Reports</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-community-line me-2"></i> Companies</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-government-line me-2"></i> Politics</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-chat-quote-line me-2"></i> Opinion</a>
+                <a class="nav-link text-dark py-2" href="#"><i class="ri-plant-line me-2"></i> Environment</a>
             </nav>
 
             <div class="mt-4 border-top pt-4">
@@ -731,160 +798,716 @@
         </div>
     </section>
 
-    <!-- NEWS & TRENDS SECTION -->
-    <section class="content-section">
-        <div class="container-fluid px-3 px-lg-4">
+    <!-- 1. GENERAL NEWS (Highlights) -->
+    <section class="section-padding">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title">General News</h3>
+                <a href="#" class="btn btn-outline-dark rounded-pill btn-sm">View All</a>
+            </div>
             <div class="row g-4">
-                
-                <!-- Right Side: News Cards Grid (Ordered First on Mobile via Flex) -->
-                <div class="col-lg-8 col-xl-9 order-1 order-lg-2">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h3 class="fw-bold m-0" style="color: #333; font-size: 1.5rem;">Latest Highlights</h3>
-                        <div class="dropdown">
-                            <button class="btn btn-light rounded-pill px-3 fw-medium btn-sm" type="button"><i class="ri-filter-3-line me-1"></i> Filter</button>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 g-md-4">
-                        <!-- Card 1 -->
-                        <div class="col-md-6">
-                            <div class="news-card">
-                                <div class="news-card-img-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600" class="news-card-img" alt="Tech">
-                                </div>
-                                <div class="news-card-body">
-                                    <span class="news-category">Technology</span>
-                                    <h3 class="news-title">The Evolution of Web Development in 2026 and Beyond</h3>
-                                    <p class="news-desc">Discover the latest frameworks, tools, and methodologies that are shaping the future of the internet.</p>
-                                    <div class="news-footer">
-                                        <div class="news-author">
-                                            <img src="https://i.pravatar.cc/150?img=12" class="author-img" alt="Author">
-                                            <span class="author-name">Alex Dev</span>
-                                        </div>
-                                        <button class="save-btn" title="Save for later"><i class="ri-bookmark-line"></i></button>
-                                    </div>
+                <div class="col-lg-8">
+                     <!-- Featured Big -->
+                     <a href="#" class="card-overlay-style">
+                         <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800" alt="News">
+                         <div class="card-overlay-content">
+                             <div class="badge bg-danger mb-2">Breaking</div>
+                             <h2 class="h3 fw-bold mb-1">Global Summit Reaches Historic Agreement</h2>
+                             <p class="mb-0 opacity-75">World leaders have finally agreed on the new climate protocols after days of negotiation.</p>
+                             <div class="card-overlay-footer">
+                                 <div><i class="ri-user-line me-1"></i> James Bond • <i class="ri-time-line me-1"></i> 2h ago</div>
+                                 <i class="ri-heart-line fs-5"></i>
+                             </div>
+                         </div>
+                     </a>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="card-horizontal">
+                            <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=400" alt="News">
+                            <div class="content">
+                                <h5 class="article-title fs-6 mb-1">New policies affecting local businesses</h5>
+                                <p class="article-desc mb-2" style="-webkit-line-clamp: 2;">Local businesses are adapting...</p>
+                                <div class="article-footer pt-2 mt-0 border-0 p-0">
+                                    <span><i class="ri-user-3-line"></i> Alex</span>
+                                    <span><i class="ri-time-line"></i> 2h</span>
+                                    <i class="ri-heart-line text-danger"></i>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Card 2 -->
-                        <div class="col-md-6">
-                            <div class="news-card">
-                                <div class="news-card-img-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600" class="news-card-img" alt="Nature">
-                                </div>
-                                <div class="news-card-body">
-                                    <span class="news-category">Environment</span>
-                                    <h3 class="news-title">Silent Forests: Preserving Ancient Woods</h3>
-                                    <p class="news-desc">A deep dive into the conservation efforts currently underway to save our planet's oldest ecosystems.</p>
-                                    <div class="news-footer">
-                                        <div class="news-author">
-                                            <img src="https://i.pravatar.cc/150?img=25" class="author-img" alt="Author">
-                                            <span class="author-name">Sarah Green</span>
-                                        </div>
-                                        <button class="save-btn" title="Save for later"><i class="ri-bookmark-line"></i></button>
-                                    </div>
+                        <div class="card-horizontal">
+                            <img src="https://images.unsplash.com/photo-1523995462485-65173881501c?w=400" alt="News">
+                            <div class="content">
+                                <h5 class="article-title fs-6 mb-1">University reform bill passes</h5>
+                                <p class="article-desc mb-2" style="-webkit-line-clamp: 2;">Students rejoice as new bill...</p>
+                                <div class="article-footer pt-2 mt-0 border-0 p-0">
+                                    <span><i class="ri-user-3-line"></i> Sarah</span>
+                                    <span><i class="ri-time-line"></i> 4h</span>
+                                    <i class="ri-heart-line text-danger"></i>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Card 3 -->
-                        <div class="col-md-6">
-                            <div class="news-card">
-                                <div class="news-card-img-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600" class="news-card-img" alt="Business">
-                                </div>
-                                <div class="news-card-body">
-                                    <span class="news-category">Business</span>
-                                    <h3 class="news-title">Remote Work: The New Permanent Standard</h3>
-                                    <p class="news-desc">Why major companies are closing physical offices and embracing a fully digital workforce.</p>
-                                    <div class="news-footer">
-                                        <div class="news-author">
-                                            <img src="https://i.pravatar.cc/150?img=33" class="author-img" alt="Author">
-                                            <span class="author-name">John Smith</span>
-                                        </div>
-                                        <button class="save-btn" title="Save for later"><i class="ri-bookmark-line"></i></button>
-                                    </div>
+                        <div class="card-horizontal">
+                            <img src="https://images.unsplash.com/photo-1546422904-90eab23c3d7e?w=400" alt="News">
+                            <div class="content">
+                                <h5 class="article-title fs-6 mb-1">Medical breakthrough announced</h5>
+                                <p class="article-desc mb-2" style="-webkit-line-clamp: 2;">Scientists discover new cure...</p>
+                                <div class="article-footer pt-2 mt-0 border-0 p-0">
+                                    <span><i class="ri-user-3-line"></i> Dr. Mike</span>
+                                    <span><i class="ri-time-line"></i> 5h</span>
+                                    <i class="ri-heart-line text-danger"></i>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Stylish Read More Button -->
-                    <div class="read-more-container">
-                        <a href="#" class="custom-read-more-btn">
-                            Load More <i class="ri-arrow-right-line"></i>
-                        </a>
                     </div>
                 </div>
-
-                <!-- Left Side: Trends Sidebar (Ordered Second on Mobile) -->
-                <div class="col-lg-4 col-xl-3 order-2 order-lg-1">
-                    <div class="trends-sidebar">
-                        <h4 class="trends-header">Trends for you</h4>
-                        
-                        <!-- Trend Item 1 -->
-                        <div class="trend-item">
-                            <div class="trend-info">
-                                <div class="trend-meta">Trending in Egypt</div>
-                                <div class="trend-title">#MegaNews_Update</div>
-                                <div class="trend-count">125K Tweets</div>
-                            </div>
-                            <div class="trend-more"><i class="ri-more-fill trend-more-icon"></i></div>
-                        </div>
-
-                        <!-- Trend Item 2 -->
-                        <div class="trend-item">
-                            <div class="trend-info">
-                                <div class="trend-meta">Technology</div>
-                                <div class="trend-title">Artificial Intelligence</div>
-                                <div class="trend-count">450K Posts</div>
-                            </div>
-                            <div class="trend-more"><i class="ri-more-fill trend-more-icon"></i></div>
-                        </div>
-
-                        <!-- Trend Item 3 -->
-                        <div class="trend-item">
-                            <div class="trend-info">
-                                <div class="trend-meta">Sports</div>
-                                <div class="trend-title">Champions League</div>
-                                <div class="trend-count">89K Posts</div>
-                            </div>
-                            <div class="trend-more"><i class="ri-more-fill trend-more-icon"></i></div>
-                        </div>
-
-                         <!-- Trend Item 4 -->
-                         <div class="trend-item">
-                            <div class="trend-info">
-                                <div class="trend-meta">Politics</div>
-                                <div class="trend-title">#Parliament2026</div>
-                                <div class="trend-count">22K Posts</div>
-                            </div>
-                            <div class="trend-more"><i class="ri-more-fill trend-more-icon"></i></div>
-                        </div>
-
-                        <a href="#" class="show-more-link">Show more</a>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
 
-    <!-- NEWS TICKER -->
-    <div class="modern-ticker-container" id="newsTickerBar">
-        <div class="ticker-wrapper">
-            <div class="ticker-label">
-                <span class="label-text"><i class="ri-bard-fill"></i> TRENDING</span>
+    <!-- 3. ECONOMY (Dark Theme) -->
+    <section class="section-padding bg-dark-custom">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper" style="border-color: #444;">
+                <h3 class="section-title text-white">Economy</h3>
+                <a href="#" class="btn btn-outline-light rounded-pill btn-sm">Analysis</a>
             </div>
-            <div class="ticker-headlines-container">
-                <div class="ticker-headline current-headline" id="headlineDisplay">Loading updates...</div>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <div class="article-card bg-transparent border-0">
+                        <img src="https://images.unsplash.com/photo-1611974765270-ca12586343bb?w=800" class="rounded-3 shadow w-100" alt="Economy">
+                        <div class="mt-3">
+                            <span class="text-warning small fw-bold text-uppercase">Exclusive</span>
+                            <h2 class="article-title text-white fs-3 mt-2">Inflation rates hit a 5-year low as new policies take effect</h2>
+                            <p class="article-desc text-white-50">Experts suggest that the recent fiscal strategies implemented by the central bank have successfully curbed the rising inflation.</p>
+                            <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-3 text-white-50">
+                                <span><i class="ri-pencil-line"></i> B. Gates</span>
+                                <span><i class="ri-calendar-line"></i> Jan 09</span>
+                                <i class="ri-heart-line cursor-pointer text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                     <div class="row g-4">
+                         <div class="col-sm-6">
+                             <div class="article-card bg-transparent">
+                                 <img src="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=400" alt="Currency" class="mb-2 rounded">
+                                 <h5 class="article-title text-white fs-6">Dollar steadies against major currencies</h5>
+                                 <p class="article-desc text-white-50 small">Updates on the global forex market movements.</p>
+                                 <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-0 text-white-50">
+                                     <span class="small"><i class="ri-pencil-line"></i> F. X.</span>
+                                     <span class="small"><i class="ri-time-line"></i> 1h</span>
+                                     <i class="ri-heart-line small text-white"></i>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="col-sm-6">
+                             <div class="article-card bg-transparent">
+                                 <img src="https://images.unsplash.com/photo-1611095790444-1dfa35e37b52?w=400" alt="Trade" class="mb-2 rounded">
+                                 <h5 class="article-title text-white fs-6">Exports rise by 12% in Q4 2025</h5>
+                                 <p class="article-desc text-white-50 small">Positive outlook for international trade volume.</p>
+                                 <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-0 text-white-50">
+                                     <span class="small"><i class="ri-pencil-line"></i> T. Ministry</span>
+                                     <span class="small"><i class="ri-time-line"></i> 3h</span>
+                                     <i class="ri-heart-line small text-white"></i>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="col-sm-6">
+                             <div class="article-card bg-transparent">
+                                 <img src="https://images.unsplash.com/photo-1554224164-3ad2104a1fc6?w=400" alt="Stocks" class="mb-2 rounded">
+                                 <h5 class="article-title text-white fs-6">Tech stocks rally continues into week</h5>
+                                 <p class="article-desc text-white-50 small">Silicon Valley giants see green across the board.</p>
+                                 <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-0 text-white-50">
+                                     <span class="small"><i class="ri-pencil-line"></i> W. Street</span>
+                                     <span class="small"><i class="ri-time-line"></i> 5h</span>
+                                     <i class="ri-heart-line small text-white"></i>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="col-sm-6">
+                             <div class="article-card bg-transparent">
+                                 <img src="https://images.unsplash.com/photo-1579532507281-2be43eb19506?w=400" alt="Crypto" class="mb-2 rounded">
+                                 <h5 class="article-title text-white fs-6">Crypto regulation framework proposed</h5>
+                                 <p class="article-desc text-white-50 small">Governments seek to stabilize digital assets.</p>
+                                 <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-0 text-white-50">
+                                     <span class="small"><i class="ri-pencil-line"></i> S. Nakamoto</span>
+                                     <span class="small"><i class="ri-time-line"></i> 6h</span>
+                                     <i class="ri-heart-line small text-white"></i>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                </div>
             </div>
         </div>
-        <button class="ticker-close-btn" id="tickerCloseBtn" aria-label="Close Ticker">
-            <i class="ri-close-line"></i>
-        </button>
-    </div>
+    </section>
+
+    <!-- 5. TECHNOLOGY (Magazine/Grid) -->
+    <section class="section-padding bg-soft">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title"><span class="text-primary">///</span> Technology</h3>
+                <a href="#" class="btn btn-primary rounded-pill btn-sm">Reviews & AI</a>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card-overlay-style h-100" style="min-height: 400px; position: relative; overflow: hidden; border-radius: 12px;">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800" alt="Tech" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay-content d-flex flex-column justify-content-end p-4" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); position: absolute; bottom: 0; left: 0; width: 100%;">
+                            <span class="badge bg-primary mb-2 align-self-start">AI Revolution</span>
+                            <h2 class="h3 fw-bold text-white mb-2">Generative AI: The next phase of creative work</h2>
+                            <p class="article-desc text-white-50 mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">From art to coding, artificial intelligence is reshaping how we create and interact with digital content.</p>
+                            <div class="article-footer border-top border-light border-opacity-25 pt-2 text-white-50">
+                                <span><i class="ri-pencil-line"></i> A. Turing</span>
+                                <span><i class="ri-calendar-line"></i> Jan 08</span>
+                                <i class="ri-heart-line cursor-pointer text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="article-card">
+                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400" alt="Tech">
+                                <h5 class="article-title fs-6">Cybersecurity trends to watch in 2026</h5>
+                                <p class="article-desc small">Protecting data in an interconnected world.</p>
+                                <div class="article-footer pt-2 mt-2 border-top">
+                                    <span class="small"><i class="ri-pencil-line"></i> K. Mitnick</span>
+                                    <span class="small"><i class="ri-time-line"></i> 2h</span>
+                                    <i class="ri-heart-line small"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="article-card">
+                                <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400" alt="Tech">
+                                <h5 class="article-title fs-6">The rise of decentralized finance apps</h5>
+                                <p class="article-desc small">How blockchain is changing banking forever.</p>
+                                <div class="article-footer pt-2 mt-2 border-top">
+                                    <span class="small"><i class="ri-pencil-line"></i> V. Buterin</span>
+                                    <span class="small"><i class="ri-time-line"></i> 4h</span>
+                                    <i class="ri-heart-line small"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="article-card">
+                                <img src="https://images.unsplash.com/photo-1531297461136-82af47129f57?w=400" alt="Tech">
+                                <h5 class="article-title fs-6">Smart Homes: Interconnectivity explained</h5>
+                                <p class="article-desc small">Making your living space work for you.</p>
+                                <div class="article-footer pt-2 mt-2 border-top">
+                                    <span class="small"><i class="ri-pencil-line"></i> T. Stark</span>
+                                    <span class="small"><i class="ri-time-line"></i> 6h</span>
+                                    <i class="ri-heart-line small"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="article-card">
+                                <img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400" alt="Tech">
+                                <h5 class="article-title fs-6">Top 5 Programming Languages this year</h5>
+                                <p class="article-desc small">Python continues to dominate the charts.</p>
+                                <div class="article-footer pt-2 mt-2 border-top">
+                                    <span class="small"><i class="ri-pencil-line"></i> L. Torvalds</span>
+                                    <span class="small"><i class="ri-time-line"></i> 8h</span>
+                                    <i class="ri-heart-line small"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. REPORTS (Document Style) -->
+    <section class="section-padding bg-light">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title">Reports & Documents</h3>
+                <a href="#" class="btn btn-outline-secondary rounded-pill btn-sm">PDF Library</a>
+            </div>
+            <div class="row g-4">
+                <div class="col-6 col-md-3">
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600" alt="Report">
+                        <h5 class="article-title fs-6">Q4 Financial Report 2025</h5>
+                        <p class="article-desc small">Detailed analysis of market performance and revenue streams.</p>
+                        <div class="article-footer border-top pt-2 mt-2">
+                             <span class="small"><i class="ri-user-follow-line"></i> FinDept</span>
+                             <span class="small"><i class="ri-time-line"></i> Jan 05</span>
+                             <i class="ri-heart-line small cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600" alt="Report">
+                        <h5 class="article-title fs-6">Sustainability Index</h5>
+                        <p class="article-desc small">Review of environmental impact goals and achievements.</p>
+                        <div class="article-footer border-top pt-2 mt-2">
+                             <span class="small"><i class="ri-user-follow-line"></i> GreenTm</span>
+                             <span class="small"><i class="ri-time-line"></i> Jan 04</span>
+                             <i class="ri-heart-line small cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600" alt="Report">
+                        <h5 class="article-title fs-6">Consumer Behavior</h5>
+                        <p class="article-desc small">Survey results from 10k participants across the globe.</p>
+                        <div class="article-footer border-top pt-2 mt-2">
+                             <span class="small"><i class="ri-user-follow-line"></i> MktTeam</span>
+                             <span class="small"><i class="ri-time-line"></i> Jan 03</span>
+                             <i class="ri-heart-line small cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                     <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600" alt="Report">
+                        <h5 class="article-title fs-6">Tech Growth Forecast</h5>
+                        <p class="article-desc small">Predictive models for the next decade of innovation.</p>
+                        <div class="article-footer border-top pt-2 mt-2">
+                             <span class="small"><i class="ri-user-follow-line"></i> AI_Bot</span>
+                             <span class="small"><i class="ri-time-line"></i> Jan 01</span>
+                             <i class="ri-heart-line small cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. POLITICS (Standard Layout) -->
+    <section class="section-padding bg-soft">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title">Politics</h3>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-8">
+                    <div class="article-card border-0 bg-transparent">
+                        <img src="https://images.unsplash.com/photo-1541872703-74c59636a2fd?w=800" class="w-100 rounded mb-3" alt="Parliament">
+                        <h2 class="article-title display-6 fw-bold mb-3">Parliament approves the new fiscal budget with a majority vote</h2>
+                        <p class="article-desc lead mb-3">In a session that lasted over 10 hours, the legislative body finalized the key components of the 2026/2027 national budget, focusing heavily on education and healthcare reforms.</p>
+                        <div class="article-footer pt-2 border-top">
+                            <span><i class="ri-map-pin-line"></i> Parliament House</span>
+                            <span><i class="ri-time-line"></i> Yesterday</span>
+                            <i class="ri-heart-line cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="mb-3">Latest Updates</h4>
+                    <div class="d-flex flex-column gap-4">
+                        <div class="article-card">
+                            <h5 class="article-title col-12"><a href="#" class="text-dark text-decoration-none">Foreign Minister visits Europe to discuss trade agreements.</a></h5>
+                            <p class="article-desc small text-muted">Diplomatic ties strengthened.</p>
+                            <div class="article-footer border-top pt-2 mt-1">
+                                <span class="small"><i class="ri-user-line"></i> Staff</span>
+                                <span class="small"><i class="ri-time-line"></i> 1h ago</span>
+                                <i class="ri-heart-line small"></i>
+                            </div>
+                        </div>
+                        <div class="article-card">
+                            <h5 class="article-title col-12"><a href="#" class="text-dark text-decoration-none">New legislative proposal for digital privacy introduced.</a></h5>
+                            <p class="article-desc small text-muted">Protecting citizen data is priority.</p>
+                            <div class="article-footer border-top pt-2 mt-1">
+                                <span class="small"><i class="ri-user-line"></i> Tech Desk</span>
+                                <span class="small"><i class="ri-time-line"></i> 3h ago</span>
+                                <i class="ri-heart-line small"></i>
+                            </div>
+                        </div>
+                        <div class="article-card">
+                            <h5 class="article-title col-12"><a href="#" class="text-dark text-decoration-none">Election commission announces dates for municipal polls.</a></h5>
+                            <p class="article-desc small text-muted">Voter registration opens next week.</p>
+                            <div class="article-footer border-top pt-2 mt-1">
+                                <span class="small"><i class="ri-user-line"></i> E. Comm</span>
+                                <span class="small"><i class="ri-time-line"></i> 5h ago</span>
+                                <i class="ri-heart-line small"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. OPINION (Standard Layout) -->
+    <section class="section-padding">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title">Opinion</h3>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2?w=600" alt="Tech Opinion">
+                        <h4 class="article-title fs-5 mt-3">The future of AI is collaborative, not replacive</h4>
+                        <p class="article-desc">"Artificial intelligence isn't about replacing humans, but about amplifying our potential."</p>
+                        <div class="article-footer border-top pt-2 mt-2">
+                             <span><img src="https://i.pravatar.cc/150?img=68" class="rounded-circle me-1" width="20" height="20"> Dr. A. Turing</span>
+                             <span><i class="ri-time-line"></i> Today</span>
+                             <i class="ri-heart-line cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600" alt="Env Opinion">
+                        <h4 class="article-title fs-5 mt-3">Sustainable energy: The economic necessity</h4>
+                        <p class="article-desc">"It is no longer a choice, it will define the next century of power dynamics."</p>
+                        <div class="article-footer border-top pt-2 mt-2">
+                             <span><img src="https://i.pravatar.cc/150?img=47" class="rounded-circle me-1" width="20" height="20"> S. Connor</span>
+                             <span><i class="ri-time-line"></i> Yesterday</span>
+                             <i class="ri-heart-line cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                     <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600" alt="Edu Opinion">
+                        <h4 class="article-title fs-5 mt-3">Education systems must evolve now</h4>
+                        <p class="article-desc">"Memorization is obsolete in an age where information is universally accessible."</p>
+                        <div class="article-footer border-top pt-2 mt-2">
+                             <span><img src="https://i.pravatar.cc/150?img=32" class="rounded-circle me-1" width="20" height="20"> K. Robinson</span>
+                             <span><i class="ri-time-line"></i> 2 days ago</span>
+                             <i class="ri-heart-line cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. ENVIRONMENT (Green/Nature) -->
+    <section class="section-padding" style="background-color: #ecfdf5;">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper" style="border-color: #d1fae5;">
+                <h3 class="section-title text-success">Environment</h3>
+                <a href="#" class="btn btn-outline-success rounded-pill btn-sm">Eco Watch</a>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="article-card mb-0 h-100 bg-transparent border-0">
+                         <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800" class="rounded w-100 mb-3" alt="Nature" style="height: 300px; object-fit: cover;">
+                         <h2 class="article-title fw-bold">Global reforestation initiative hits major milestone</h2>
+                         <p class="article-desc">The project has successfully planted over 10 million trees in critical zones across the Amazon.</p>
+                         <div class="article-footer pt-3 mt-auto border-top border-success border-opacity-25">
+                            <span><i class="ri-leaf-line text-success"></i> EcoTeam</span>
+                            <span><i class="ri-time-line"></i> 2h ago</span>
+                            <i class="ri-heart-line cursor-pointer text-success"></i>
+                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="d-flex flex-column gap-4 justify-content-center h-100">
+                        <div class="article-card bg-transparent">
+                             <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb7d5b43?w=600" class="rounded mb-2" alt="Eco" style="height: 150px; object-fit: cover; width: 100%;">
+                             <h4 class="article-title fw-bold fs-5">Plastic-free oceans: New cleanup tech deployed</h4>
+                             <p class="article-desc text-muted">Autonomous drones are filtering microplastics with 95% efficiency.</p>
+                             <div class="article-footer pt-2 border-top border-success border-opacity-25">
+                                <span class="small"><i class="ri-pencil-line"></i> OceanCleanup</span>
+                                <span class="small"><i class="ri-time-line"></i> 5h ago</span>
+                                <i class="ri-heart-line small cursor-pointer"></i>
+                             </div>
+                        </div>
+                        <div class="article-card bg-transparent">
+                             <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600" class="rounded mb-2" alt="Eco" style="height: 150px; object-fit: cover; width: 100%;">
+                             <h4 class="article-title fw-bold fs-5">Solar power adoption doubles in residential areas</h4>
+                             <p class="article-desc text-muted">Subsidies and lower costs drive the green shift.</p>
+                             <div class="article-footer pt-2 border-top border-success border-opacity-25">
+                                <span class="small"><i class="ri-pencil-line"></i> SunEnergy</span>
+                                <span class="small"><i class="ri-time-line"></i> 8h ago</span>
+                                <i class="ri-heart-line small cursor-pointer"></i>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-padding">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title">Featured Companies</h3>
+            </div>
+            <div class="row g-4 align-items-center mb-5">
+                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/368px-Google_2015_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
+                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/603px-Amazon_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
+                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/1000px-IBM_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
+                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/439px-Microsoft_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
+                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/799px-Netflix_2015_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
+                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/600px-Tesla_logo.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card bg-dark text-white border-0 overflow-hidden h-100">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800" class="card-img opacity-50 h-100 object-fit-cover" alt="Biz">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
+                            <span class="badge bg-warning text-dark align-self-start mb-2">Spotlight</span>
+                            <h5 class="article-title card-title fs-3 fw-bold text-white">Company of the Month</h5>
+                            <p class="article-desc card-text text-white-50">How "TechNova" transformed from a startup to a unicorn in just 2 years with innovative leadership.</p>
+                            <div class="article-footer border-top border-white border-opacity-25 pt-2 mt-2 text-white-50">
+                                <span><i class="ri-user-star-line"></i> Editor's Pick</span>
+                                <span><i class="ri-time-line"></i> Jan 01</span>
+                                <i class="ri-heart-line text-white cursor-pointer"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-6">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item py-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="badge bg-light text-dark border">Telco</span>
+                                <small class="text-muted"><i class="ri-time-line"></i> 2h</small>
+                            </div>
+                            <h5 class="article-title fs-6 mb-1"><span class="fw-bold text-danger">Vodafone</span> expands 5G network covering 90% of delta.</h5>
+                             <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted"><i class="ri-pencil-line"></i> Tech Team</small>
+                                <i class="ri-heart-line text-muted cursor-pointer"></i>
+                            </div>
+                        </li>
+                        <li class="list-group-item py-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="badge bg-light text-dark border">Real Estate</span>
+                                <small class="text-muted"><i class="ri-time-line"></i> 5h</small>
+                            </div>
+                             <h5 class="article-title fs-6 mb-1"><span class="fw-bold text-primary">Emaar Misr</span> announces new coastal project worth billions.</h5>
+                              <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted"><i class="ri-pencil-line"></i> RE Desk</small>
+                                <i class="ri-heart-line text-muted cursor-pointer"></i>
+                            </div>
+                        </li>
+                        <li class="list-group-item py-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="badge bg-light text-dark border">Transport</span>
+                                <small class="text-muted"><i class="ri-time-line"></i> 8h</small>
+                            </div>
+                             <h5 class="article-title fs-6 mb-1"><span class="fw-bold text-danger">Swvl</span> returns to profitability in Q1 after restructure.</h5>
+                              <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted"><i class="ri-pencil-line"></i> Biz Analyst</small>
+                                <i class="ri-heart-line text-muted cursor-pointer"></i>
+                            </div>
+                        </li>
+                        <li class="list-group-item py-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="badge bg-light text-dark border">E-com</span>
+                                <small class="text-muted"><i class="ri-time-line"></i> 1d</small>
+                            </div>
+                             <h5 class="article-title fs-6 mb-1"><span class="fw-bold text-warning">Jumia</span> launches heavy equipment marketplace for B2B.</h5>
+                              <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted"><i class="ri-pencil-line"></i> Market Watch</small>
+                                <i class="ri-heart-line text-muted cursor-pointer"></i>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-padding">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title" style="color: #f59e0b;">Energy & Power</h3>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="border-top border-4 border-warning pt-3 h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <h2 class="display-6 fw-bold mb-3 article-title">Green Shift</h2>
+                            <p class="article-desc text-muted">Countries are racing towards net-zero emissions. How is the energy sector adapting to these new ambitious goals?</p>
+                            <ul class="list-unstyled mt-4 d-flex flex-column gap-2">
+                                <li class="d-flex align-items-center"><i class="ri-arrow-right-line text-warning me-2"></i> Solar farm expansions</li>
+                                <li class="d-flex align-items-center"><i class="ri-arrow-right-line text-warning me-2"></i> Wind energy investments</li>
+                                <li class="d-flex align-items-center"><i class="ri-arrow-right-line text-warning me-2"></i> Nuclear power safety</li>
+                            </ul>
+                        </div>
+                        <div class="article-footer border-top pt-2 mt-4">
+                             <span class="small"><i class="ri-flashlight-line text-warning"></i> Energy Dpt.</span>
+                             <span class="small"><i class="ri-time-line"></i> 4h ago</span>
+                             <i class="ri-heart-line small cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="article-card h-100">
+                                <div class="position-relative overflow-hidden rounded-3 mb-3">
+                                     <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600" class="w-100 object-fit-cover rounded-3" style="height: 250px;" alt="Wind">
+                                     <div class="position-absolute dark-overlay-bottom p-3">
+                                        <h5 class="text-white mb-0 article-title">Wind Assets Booming</h5>
+                                     </div>
+                                </div>
+                                <p class="article-desc small text-muted">Offshore wind farms see record investment in 2026.</p>
+                                <div class="article-footer border-top pt-2 mt-auto">
+                                     <span class="small"><i class="ri-user-line"></i> Analyst A</span>
+                                     <span class="small"><i class="ri-time-line"></i> 1 day ago</span>
+                                     <i class="ri-heart-line small cursor-pointer"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                             <div class="article-card h-100">
+                                <div class="position-relative overflow-hidden rounded-3 mb-3">
+                                     <img src="https://images.unsplash.com/photo-1566093097221-ac2335b09e70?w=600" class="w-100 object-fit-cover rounded-3" style="height: 250px;" alt="Solar">
+                                     <div class="position-absolute dark-overlay-bottom p-3">
+                                        <h5 class="text-white mb-0 article-title">Solar Tech Innovation</h5>
+                                     </div>
+                                </div>
+                                <p class="article-desc small text-muted">New panels achieve 30% higher efficiency rates.</p>
+                                <div class="article-footer border-top pt-2 mt-auto">
+                                     <span class="small"><i class="ri-user-line"></i> Sci. B</span>
+                                     <span class="small"><i class="ri-time-line"></i> 2 days ago</span>
+                                     <i class="ri-heart-line small cursor-pointer"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-padding">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title">Banks & Stock</h3>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="p-4 border rounded-3 text-center bg-light h-100 d-flex flex-column justify-content-center">
+                        <h1 class="display-5 fw-bold text-success mb-0 article-title">+1.2%</h1>
+                        <p class="article-desc text-muted mb-0 fw-bold">EGX 30 Index</p>
+                         <div class="article-footer justify-content-center border-top w-100 pt-2 mt-3">
+                             <span class="small"><i class="ri-time-line"></i> Live</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row g-3">
+                         <div class="col-sm-6 col-md-4">
+                             <div class="article-card p-3 border rounded-3 h-100">
+                                 <div class="d-flex justify-content-between align-items-center mb-2">
+                                     <span class="fw-bold article-title">CIB Bank</span>
+                                     <span class="badge bg-success">+0.5%</span>
+                                 </div>
+                                 <div class="small article-desc text-muted mb-2">Trading at 75.20 EGP</div>
+                                 <div class="article-footer border-top pt-2 mt-auto">
+                                     <span class="small text-muted"><i class="ri-funds-line"></i> Stock</span>
+                                      <i class="ri-heart-line text-muted cursor-pointer"></i>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="col-sm-6 col-md-4">
+                             <div class="article-card p-3 border rounded-3 h-100">
+                                 <div class="d-flex justify-content-between align-items-center mb-2">
+                                     <span class="fw-bold article-title">NBE</span>
+                                     <span class="badge bg-secondary">0.0%</span>
+                                 </div>
+                                 <div class="small article-desc text-muted mb-2">Stable Interest Rates</div>
+                                  <div class="article-footer border-top pt-2 mt-auto">
+                                     <span class="small text-muted"><i class="ri-bank-line"></i> Bank</span>
+                                      <i class="ri-heart-line text-muted cursor-pointer"></i>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="col-sm-6 col-md-4">
+                             <div class="article-card p-3 border rounded-3 h-100">
+                                 <div class="d-flex justify-content-between align-items-center mb-2">
+                                     <span class="fw-bold article-title">FinTech Co</span>
+                                     <span class="badge bg-danger">-1.2%</span>
+                                 </div>
+                                 <div class="small article-desc text-muted mb-2">Correcting after rally</div>
+                                  <div class="article-footer border-top pt-2 mt-auto">
+                                     <span class="small text-muted"><i class="ri-smartphone-line"></i> Tech</span>
+                                      <i class="ri-heart-line text-muted cursor-pointer"></i>
+                                 </div>
+                             </div>
+                         </div>
+                         <!-- More stocks -->
+                         <div class="col-12">
+                             <div class="p-3 rounded-3 bg-primary bg-opacity-10 d-flex align-items-center text-primary justify-content-between">
+                                 <div class="d-flex align-items-center">
+                                     <i class="ri-information-line fs-4 me-3"></i>
+                                     <div>
+                                         <strong>Market Update:</strong> Banking sector shows resilience amid global fluctuations.
+                                     </div>
+                                 </div>
+                                 <i class="ri-heart-line cursor-pointer"></i>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- 2. REAL ESTATE (Grid Layout / Light BG) -->
+    <section class="section-padding bg-soft">
+        <div class="container-fluid px-lg-5">
+            <div class="section-title-wrapper">
+                <h3 class="section-title">Real Estate</h3>
+                <a href="#" class="btn btn-outline-dark rounded-pill btn-sm">Market Watch</a>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600" alt="Real Estate">
+                        <h4 class="article-title fs-5">Modern Villas in New Capital city gain popularity</h4>
+                        <p class="article-desc">Luxury living reaches new heights with these modern designs.</p>
+                        <div class="article-footer">
+                            <span><i class="ri-pencil-line"></i> John Doe</span>
+                            <span><i class="ri-calendar-line"></i> Jan 14</span>
+                            <i class="ri-heart-line cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                     <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=600" alt="Real Estate">
+                        <h4 class="article-title fs-5">Housing prices expected to stabilize in Q3</h4>
+                        <p class="article-desc">Market analysis shows a steady correction phase.</p>
+                        <div class="article-footer">
+                            <span><i class="ri-pencil-line"></i> H. Potter</span>
+                            <span><i class="ri-calendar-line"></i> Jan 13</span>
+                            <i class="ri-heart-line cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                     <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600" alt="Real Estate">
+                        <h4 class="article-title fs-5">Green sustainable buildings: The future of living</h4>
+                        <p class="article-desc">How eco-friendly architecture is saving costs.</p>
+                        <div class="article-footer">
+                            <span><i class="ri-pencil-line"></i> G. Thunberg</span>
+                            <span><i class="ri-calendar-line"></i> Jan 12</span>
+                            <i class="ri-heart-line cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                     <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1484154218962-a1c00207bf9a?w=600" alt="Real Estate">
+                        <h4 class="article-title fs-5">Top 10 Interior design trends for 2026</h4>
+                        <p class="article-desc">Minimalism meets functionality in the new year.</p>
+                        <div class="article-footer">
+                            <span><i class="ri-pencil-line"></i> A. Design</span>
+                            <span><i class="ri-calendar-line"></i> Jan 10</span>
+                            <i class="ri-heart-line cursor-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -895,16 +1518,7 @@
         });
 
         // Dropdown hover (Desktop only)
-        if (window.innerWidth > 991) {
-            document.querySelectorAll('.dropdown').forEach(dropdown => {
-                const toggle = dropdown.querySelector('.dropdown-toggle');
-                const menu = dropdown.querySelector('.dropdown-menu');
-                if (toggle && menu) {
-                    dropdown.addEventListener('mouseenter', () => dropdown.classList.add('show'));
-                    dropdown.addEventListener('mouseleave', () => dropdown.classList.remove('show'));
-                }
-            });
-        }
+        // Removed as per request
 
         // --- Date & Time Script ---
         function updateDateTime() {
@@ -985,6 +1599,15 @@
                 if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
                     searchOverlay.classList.remove('active');
                 }
+            });
+        }
+
+        // --- Social Expand Script ---
+        const socialToggleBtn = document.getElementById('socialToggleBtn');
+        const socialGroup = document.getElementById('socialGroup');
+        if(socialToggleBtn && socialGroup){
+            socialToggleBtn.addEventListener('click', () => {
+                socialGroup.classList.toggle('active');
             });
         }
     </script>
