@@ -7,583 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            /* Modern Vibrant Palette */
-            --primary-color: #4361ee; /* Bright Blue */
-            --secondary-color: #3f37c9; /* Deep Indigo */
-            --accent-color: #f72585; /* Vibrant Pink/Red */
-            --ticker-bg: #000000; /* Black */
-            --ticker-text: #ffffff;
-            --ticker-height: 40px; /* Slightly smaller for top bar */
-            --twitter-bg: #f1f5f9; /* Light Slate structure */
-            --twitter-hover: #e2e8f0;
-            --mobile-header-height: 60px;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fff;
-            margin: 0;
-            padding-bottom: 0; /* Removed ticker padding */
-            overflow-x: hidden;
-        }
-
-        a { text-decoration: none !important; outline: none !important; border: none !important; color: inherit; }
-        .btn:focus, .form-control:focus, input:focus { box-shadow: none !important; border: none !important; outline: none !important; }
-        
-        /* --- User Profile & Common Styles --- */
-        .user-profile { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 5px 10px; border-radius: 8px; transition: 0.2s; }
-        .user-profile:hover { background-color: #f8f9fa; }
-        
-        /* --- Enhanced Dropdown Styles --- */
-        .dropdown-menu {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
-            padding: 8px;
-            margin-top: 15px !important; /* Proper spacing */
-            display: none;
-        }
-        
-        /* Animation when shown */
-        .dropdown-menu.show {
-            display: block;
-            animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(15px) scale(0.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .dropdown-item {
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-weight: 500;
-            font-size: 0.92rem;
-            color: #444;
-            transition: all 0.2s ease;
-            margin-bottom: 2px;
-        }
-        .dropdown-item:last-child { margin-bottom: 0; }
-        
-        .dropdown-item:hover {
-            background-color: #f3f4f6;
-            color: var(--primary-color);
-            transform: translateX(3px);
-        }
-        
-        .dropdown-toggle::after { content: none; }
-
-        /* Specific Profile Menu Styling */
-        .profile-menu-custom {
-            min-width: 260px;
-            padding: 10px;
-            margin-top: 10px !important;
-        }
-        
-        /* Specific More Menu Styling */
-        .more-menu-custom {
-            min-width: 220px;
-            margin-top: 25px !important;
-        }
-
-        /* Saved Pill Custom Style */
-
-        /* Saved Pill Custom Style */
-        .saved-pill {
-            background-color: #fff0f3; /* Soft Pink Bg */
-            color: #e63946; /* Nice Red */
-            border: 1px solid #ffccd5;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        .saved-pill:hover {
-            background-color: #e63946;
-            color: #ffffff;
-            border-color: #e63946;
-        }
-        .saved-pill:hover .badge-count { background: rgba(255,255,255,0.2) !important; color: #fff !important; }
-
-        /* --- Refined Header Styles --- */
-        .main-header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: #ffffffea;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-
-        .header-top {
-            padding: 12px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .header-bottom {
-            padding: 0;
-            background-color: transparent;
-        }
-
-        .navbar-brand {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--primary-color);
-            letter-spacing: -0.5px;
-            margin: 0;
-            text-decoration: none !important;
-        }
-        
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .search-trigger-pill {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 16px;
-            background-color: #f7f9fa;
-            border-radius: 50px;
-            color: #666;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 200px;
-        }
-        .search-trigger-pill:hover {
-            background-color: #edf0f2;
-            color: var(--primary-color);
-        }
-
-        .nav-scroller {
-            position: relative;
-            z-index: 2;
-            height: 100%;
-            display: flex;
-            justify-content: flex-start; /* Aligned left/start */
-            overflow-x: auto;
-            overflow-y: hidden;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-            padding: 0 1rem;
-            background-color: transparent;
-        }
-        
-        /* Hide scrollbar */
-        .nav-scroller::-webkit-scrollbar { display: none; }
-        .nav-scroller { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            padding: 14px 0;
-            
-        }
-
-        .nav-link-item {
-            font-size: 15px;
-            font-weight: 600;
-            color: #555;
-            position: relative;
-            padding: 5px 0;
-            transition: color 0.2s;
-            text-decoration: none !important;
-        }
-        
-        .nav-link-item:hover {
-            color: var(--primary-color);
-        }
-        
-        .nav-icon-link {
-            width: 36px; height: 36px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            color: #666;
-            transition: 0.2s;
-            background: #ffffffea; /* Semi-transparent */
-            backdrop-filter: blur(5px);
-        }
-        .nav-icon-link:hover {
-            background: var(--primary-color);
-            color: #fff;
-        }
-
-        .utility-divider {
-             height: 24px;
-             width: 1px;
-             background-color: #e5e7eb;
-             margin: 0 5px;
-        }
-
-        /* Mobile tweaks */
-        @media (max-width: 991px) {
-            .header-top { padding: 10px 0; border: none; }
-            .header-bottom { display: none; }
-            .main-header { padding-bottom: 5px; }
-        }
-        
-        /* --- Hero Section --- */
-        .hero-section { padding: 30px 0; background-color: #fff; }
-        .hero-grid-item { position: relative; border-radius: 8px; overflow: hidden; display: block; width: 100%; text-decoration: none; transition: transform 0.3s ease; }
-        /* Removed hover scale on mobile to prevent overflow issues */
-        @media(min-width: 992px) {
-            .hero-grid-item:hover .hero-bg-img { transform: scale(1.05); }
-        }
-        
-        .hero-large { height: 400px; }
-        .hero-small { height: 240px; }
-        
-        @media (max-width: 991px) { 
-            .hero-large { height: 300px; } 
-            .hero-small { height: 200px; }
-            .hero-title { font-size: 18px !important; }
-        }
-
-        .hero-bg-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .hero-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0; top: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0) 100%);
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; z-index: 2;
-        }
-        
-        .category-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; color: #fff; margin-bottom: 10px; width: fit-content; }
-        .bg-blue { background-color: #2196f3; }
-        .bg-purple { background-color: #673ab7; }
-        .bg-teal { background-color: #009688; }
-        .bg-red { background-color: #e91e63; }
-        
-        .hero-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 10px; line-height: 1.4; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .hero-meta { font-size: 12px; color: #ccc; display: flex; align-items: center; gap: 15px; }
-        .g-custom { --bs-gutter-x: 20px; --bs-gutter-y: 20px; }
-
-
-        /* --- CONTENT SECTION STYLES --- */
-        .content-section { padding: 20px 0 60px; background-color: #fff; }
-
-        .trends-sidebar {
-            background-color: var(--twitter-bg);
-            border-radius: 16px;
-            padding: 15px 0;
-            position: sticky;
-            top: 100px;
-        }
-        
-        /* Mobile Trends adjustments */
-        @media (max-width: 991px) {
-            .trends-sidebar { position: static; margin-bottom: 40px; }
-            .content-section .row { flex-direction: column-reverse; } /* News first, trends second on mobile */
-        }
-
-        .trends-header {
-            padding: 0 20px 10px;
-            font-size: 20px;
-            font-weight: 800;
-            border-bottom: 1px solid #e1e8ed;
-            margin-bottom: 5px;
-        }
-
-        .trend-item {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .trend-item:hover { background-color: var(--twitter-hover); }
-
-        .trend-meta { font-size: 13px; color: #536471; margin-bottom: 2px; }
-        .trend-title { font-size: 15px; font-weight: 700; color: #0f1419; margin-bottom: 2px; line-height: 1.3; }
-        .trend-count { font-size: 13px; color: #536471; }
-        .trend-more-icon { color: #536471; padding: 5px; border-radius: 50%; }
-        .trend-more-icon:hover { background-color: rgba(29, 155, 240, 0.1); color: #1d9bf0; }
-        .show-more-link { display: block; padding: 15px 20px; color: #1d9bf0; font-size: 15px; text-decoration: none; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
-        .show-more-link:hover { background-color: var(--twitter-hover); }
-
-        .news-card {
-            border: 1px solid #eee;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            background: #fff;
-        }
-
-        .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border-color: transparent;
-        }
-
-        .news-card-img-wrapper { position: relative; height: 200px; overflow: hidden; }
-        .news-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .news-card:hover .news-card-img { transform: scale(1.05); }
-        
-        .news-card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .news-category { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--primary-color); margin-bottom: 8px; letter-spacing: 0.5px; }
-        .news-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; color: #1a1a1a; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .news-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        .news-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f9f9f9; padding-top: 15px; margin-top: auto; }
-        .news-author { display: flex; align-items: center; gap: 8px; }
-        .author-img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
-        .author-name { font-size: 12px; font-weight: 600; color: #444; }
-        
-        .save-btn {
-            background: #f8f9fa; border: none; cursor: pointer; color: #666; font-size: 16px;
-            transition: 0.2s; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
-        }
-        .save-btn:hover { color: #fff; background-color: var(--primary-color); }
-
-        .read-more-container { text-align: center; margin-top: 40px; }
-        .custom-read-more-btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 12px 35px;
-            background: transparent;
-            color: #333;
-            border: 2px solid #333;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .custom-read-more-btn:hover {
-            background: #333;
-            color: #fff;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        /* --- News Ticker Styles --- */
-        .modern-ticker-container {
-            position: relative; /* Changed from fixed */
-            width: 100%;
-            height: var(--ticker-height);
-            background-color: var(--ticker-bg);
-            color: var(--ticker-text);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1051; /* Keep high */
-            font-size: 13px;
-        }
-        .modern-ticker-container.closed { display: none; } /* adjusted for relative */
-        
-        .ticker-wrapper { display: flex; align-items: center; flex-grow: 1; overflow: hidden; height: 100%; }
-        
-        .ticker-label {
-            display: flex; align-items: center; padding: 0 40px 0 20px; height: 100%;
-            font-weight: 800; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase;
-            background: linear-gradient(135deg, #ff0000 0%, #b00000 100%);
-            color: #fff;
-            clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-        }
-        /* Icon removed in favor of direct HTML icon */
-        
-        .ticker-headlines-container { flex-grow: 1; position: relative; height: 100%; margin-left: 10px; overflow: hidden; }
-        
-        .ticker-headline {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; align-items: center; font-size: 0.85rem; font-weight: 500;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-        .ticker-headline.current-headline { opacity: 1; transform: translateY(0); }
-        .ticker-headline.exit-headline { opacity: 0; transform: translateY(-20px); }
-        
-        .ticker-close-btn {
-            background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer;
-            padding: 0 16px; height: 100%; display: flex; align-items: center; transition: color 0.2s;
-        }
-        .ticker-close-btn:hover { color: white; background-color: rgba(255,255,255,0.1); }
-
-        /* --- Full Screen Search Overlay Styles (NEW) --- */
-        .search-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-20px) scale(0.98);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .search-overlay.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-
-        .search-overlay-close {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            font-size: 32px;
-            color: #333;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .search-overlay-close:hover { transform: rotate(90deg) scale(1.1); color: var(--primary-color); }
-
-        .search-overlay-content {
-            width: 100%;
-            max-width: 800px;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        .overlay-search-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #ccc;
-            font-size: 2rem; /* Smaller for mobile */
-            font-weight: 700;
-            color: #333;
-            padding: 10px 0;
-            outline: none;
-            text-align: center;
-            transition: border-color 0.3s ease;
-        }
-        @media(min-width:768px){ .overlay-search-input { font-size: 3rem; } }
-
-        .overlay-search-input:focus { border-color: var(--primary-color); }
-        .overlay-search-input::placeholder { color: #aaa; font-weight: 300; }
-        
-        .overlay-search-desc {
-            margin-top: 20px;
-            color: #666;
-            font-size: 14px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.4s ease 0.1s;
-        }
-        
-        .search-overlay.active .overlay-search-desc { opacity: 1; transform: translateY(0); }
-
-        /* Animation for Offcanvas Items */
-        .offcanvas {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        .offcanvas.show .nav-link { animation: slideIn 0.4s forwards; opacity: 0; transform: translateX(-20px); }
-        .offcanvas.show .nav-link:nth-child(1) { animation-delay: 0.1s; }
-        .offcanvas.show .nav-link:nth-child(2) { animation-delay: 0.2s; }
-        .offcanvas.show .nav-link:nth-child(3) { animation-delay: 0.3s; }
-        .offcanvas.show .nav-link:nth-child(4) { animation-delay: 0.4s; }
-        .offcanvas.show .nav-link:nth-child(5) { animation-delay: 0.5s; }
-        
-        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
-
-        /* --- Social Expandable Styles --- */
-        .social-group-wrapper {
-            display: flex;
-            align-items: center;
-        }
-        
-        .extra-icons-container {
-            display: flex;
-            align-items: center;
-            gap: 8px; 
-            max-width: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy expand */
-            transform: translateX(20px);
-        }
-        
-        .social-group-wrapper.active .extra-icons-container {
-            max-width: 150px; 
-            opacity: 1;
-            transform: translateX(0);
-            margin-right: 8px;
-        }
-
-        .social-expand-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #f0f2f5;
-            border: none;
-            color: #555;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 8px;
-        }
-        .social-expand-btn:hover {
-            background-color: var(--primary-color);
-            color: #fff;
-        }
-        .social-expand-btn i {
-            transition: transform 0.3s ease;
-        }
-        
-        /* Rotate arrow when active */
-        .social-group-wrapper.active .social-expand-btn i {
-            transform: rotate(180deg);
-        }
-
-        /* --- NEW SECTION STYLES --- */
-        .section-padding { padding: 60px 0; }
-        .bg-soft { background-color: #f8f9fa; }
-        .bg-dark-custom { background-color: #1a1a1a; color: #fff; }
-        
-        .section-title-wrapper { margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 15px; }
-        .section-title { font-size: 24px; font-weight: 800; position: relative; margin: 0; }
-        .section-title::after { content: ""; position: absolute; bottom: -17px; left: 0; width: 60px; height: 4px; background-color: var(--primary-color); border-radius: 2px; }
-        .bg-dark-custom .section-title-wrapper { border-color: #333; }
-        
-        /* Card Styles */
-        .article-card { transition: transform 0.3s ease; height: 100%; display: flex; flex-direction: column; }
-        .article-card:hover { transform: translateY(-5px); }
-        .article-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
-        
-        .article-title { font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; color: inherit; }
-        .article-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .bg-dark-custom .article-title { color: #fff; }
-        .bg-dark-custom .article-desc { color: #aaa; }
-        
-        .article-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 10px; border-top: 1px solid #eee; font-size: 12px; color: #888; }
-        .bg-dark-custom .article-footer { border-color: #333; color: #777; }
-        
-        .card-horizontal { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
-        .card-horizontal img { width: 140px; height: 100px; object-fit: cover; border-radius: 10px; flex-shrink: 0; margin: 0; }
-        .card-horizontal .content { flex-grow: 1; }
-        
-        .card-overlay-style { position: relative; height: 400px; border-radius: 16px; overflow: hidden; display: block; color: white; }
-        .card-overlay-style img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .card-overlay-style:hover img { transform: scale(1.05); }
-        .card-overlay-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 25px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); }
-        .card-overlay-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; opacity: 0.8; }
-
-    </style>
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <script>
+        tailwind.config = { corePlugins: { preflight: false } };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('js/custom.js') }}" defer></script>
 </head>
 <body>
 
@@ -631,6 +60,10 @@
                     <!-- Icons -->
                     <div class="d-flex align-items-center gap-2">
                         <button class="btn btn-link p-0 text-dark d-md-none me-2 text-decoration-none" id="searchTriggerMobile"><i class="ri-search-line fs-5"></i></button>
+                        <a href="#" class="mobile-saved-btn d-md-none" aria-label="Saved items">
+                            <i class="ri-heart-3-line"></i>
+                            <span class="badge-dot"></span>
+                        </a>
                         
                         <a href="#" class="saved-pill d-flex align-items-center gap-2 text-decoration-none me-3 px-3 py-2 rounded-pill">
                              <i class="ri-heart-line"></i>
@@ -686,48 +119,86 @@
     </header>
 
     <!-- MOBILE OFFCANVAS MENU -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
-        <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title fw-bold" id="mobileMenuLabel">oreix.news</h5>
+    <div class="offcanvas offcanvas-start mobile-menu" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+        <div class="offcanvas-header">
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary-subtle text-primary fw-bold">Menu</span>
+                <h5 class="offcanvas-title fw-bold mb-0" id="mobileMenuLabel">oreix.news</h5>
+            </div>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body d-flex flex-column">
-            <!-- Mobile User Profile -->
-            <div class="d-flex align-items-center mb-4 p-2 rounded bg-light">
-                 <img src="https://i.pravatar.cc/150?img=11" alt="User" class="rounded-circle me-3" width="50" height="50">
-                 <div>
-                     <div class="fw-bold">Youssef Enad</div>
-                     <small class="text-muted">View Profile</small>
-                 </div>
+        <div class="offcanvas-body d-flex flex-column gap-3">
+            <!-- Mobile User Profile Card -->
+            <div class="mobile-profile-card">
+                <div class="d-flex align-items-center">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="User" class="rounded-circle me-3" width="50" height="50">
+                    <div>
+                        <div class="fw-bold text-dark">Youssef Enad</div>
+                        <small class="text-muted">View Profile</small>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="#" class="menu-quick-btn"><i class="ri-heart-3-line me-1"></i>Saved</a>
+                    <a href="#" class="menu-quick-btn"><i class="ri-notification-3-line me-1"></i>Alerts</a>
+                    <a href="#" class="menu-quick-btn"><i class="ri-mail-line me-1"></i>Newsletter</a>
+                </div>
             </div>
 
-            <nav class="nav flex-column mb-auto overflow-auto" style="max-height: calc(100vh - 250px);">
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-home-4-line me-2"></i> Home</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-newspaper-line me-2"></i> General News</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-building-line me-2"></i> Real Estate</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-line-chart-line me-2"></i> Economy</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-bank-line me-2"></i> Banks & Stock</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-cpu-line me-2"></i> Technology</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-flashlight-line me-2"></i> Energy</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-file-list-3-line me-2"></i> Reports</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-community-line me-2"></i> Companies</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-government-line me-2"></i> Politics</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-chat-quote-line me-2"></i> Opinion</a>
-                <a class="nav-link text-dark py-2" href="#"><i class="ri-plant-line me-2"></i> Environment</a>
-            </nav>
+            <div class="menu-section">
+                <div class="menu-section-title">Quick Access</div>
+                <div class="menu-grid">
+                    <a class="menu-tile" href="#"><i class="ri-home-4-line"></i><span>Home</span></a>
+                    <a class="menu-tile" href="#"><i class="ri-line-chart-line"></i><span>Markets</span></a>
+                    <a class="menu-tile" href="#"><i class="ri-mic-line"></i><span>Podcasts</span></a>
+                    <a class="menu-tile" href="#"><i class="ri-mail-open-line"></i><span>Newsletter</span></a>
+                </div>
+            </div>
 
-            <div class="mt-4 border-top pt-4">
-                 <div class="d-flex justify-content-between align-items-center mb-3 text-muted">
+            <div class="menu-section">
+                <div class="menu-section-title">Sections</div>
+                <div class="menu-list">
+                    <a class="menu-link" href="#"><i class="ri-newspaper-line"></i><span>General News</span></a>
+                    <a class="menu-link" href="#"><i class="ri-building-line"></i><span>Real Estate</span></a>
+                    <a class="menu-link" href="#"><i class="ri-line-chart-line"></i><span>Economy</span></a>
+                    <a class="menu-link" href="#"><i class="ri-bank-line"></i><span>Banks & Stock</span></a>
+                    <a class="menu-link" href="#"><i class="ri-cpu-line"></i><span>Technology</span></a>
+                    <a class="menu-link" href="#"><i class="ri-flashlight-line"></i><span>Energy</span></a>
+                    <a class="menu-link" href="#"><i class="ri-file-list-3-line"></i><span>Reports</span></a>
+                    <a class="menu-link" href="#"><i class="ri-community-line"></i><span>Companies</span></a>
+                    <a class="menu-link" href="#"><i class="ri-government-line"></i><span>Politics</span></a>
+                    <a class="menu-link" href="#"><i class="ri-chat-quote-line"></i><span>Opinion</span></a>
+                    <a class="menu-link" href="#"><i class="ri-plant-line"></i><span>Environment</span></a>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-section-title">Tools</div>
+                <div class="menu-tools">
+                    <div class="tool-card">
+                        <div class="d-flex align-items-center gap-2"><i class="ri-search-2-line"></i><span class="fw-bold">Search</span></div>
+                        <small class="text-muted">Find stories, tickers, and authors.</small>
+                        <button class="btn btn-sm btn-primary w-100 mt-2" data-bs-dismiss="offcanvas" id="searchTriggerFromMenu">Open Search</button>
+                    </div>
+                    <div class="tool-card">
+                        <div class="d-flex align-items-center gap-2"><i class="ri-notification-3-line"></i><span class="fw-bold">Alerts</span></div>
+                        <small class="text-muted">Manage your breaking alerts.</small>
+                        <a class="btn btn-sm btn-outline-secondary w-100 mt-2" href="#">Manage</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto">
+                <div class="d-flex justify-content-center gap-3 mb-3">
+                    <a href="#" class="social-icon social-pill"><i class="ri-facebook-fill"></i></a>
+                    <a href="#" class="social-icon social-pill"><i class="ri-twitter-x-fill"></i></a>
+                    <a href="#" class="social-icon social-pill"><i class="ri-instagram-line"></i></a>
+                    <a href="#" class="social-icon social-pill"><i class="ri-linkedin-fill"></i></a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center text-muted small mb-3">
                     <span><i class="ri-sun-cloudy-line"></i> Cairo, 24°C</span>
-                 </div>
-                 
-                 <div class="action-icons-mobile justify-content-center">
-                    <a href="#" class="social-icon"><i class="ri-facebook-fill"></i></a>
-                    <a href="#" class="social-icon"><i class="ri-twitter-x-fill"></i></a>
-                    <a href="#" class="social-icon"><i class="ri-instagram-line"></i></a>
-                 </div>
-
-                 <button class="btn btn-outline-danger w-100 mt-4 rounded-pill"><i class="ri-logout-box-line me-2"></i> Logout</button>
+                    <span class="badge bg-dark text-white">Live</span>
+                </div>
+                <button class="btn btn-outline-danger w-100 rounded-pill"><i class="ri-logout-box-line me-2"></i> Logout</button>
             </div>
         </div>
     </div>
@@ -798,818 +269,1366 @@
         </div>
     </section>
 
-    <!-- 1. GENERAL NEWS (Highlights) -->
-    <section class="section-padding">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title">General News</h3>
-                <a href="#" class="btn btn-outline-dark rounded-pill btn-sm">View All</a>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-8">
-                     <!-- Featured Big -->
-                     <a href="#" class="card-overlay-style">
-                         <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800" alt="News">
-                         <div class="card-overlay-content">
-                             <div class="badge bg-danger mb-2">Breaking</div>
-                             <h2 class="h3 fw-bold mb-1">Global Summit Reaches Historic Agreement</h2>
-                             <p class="mb-0 opacity-75">World leaders have finally agreed on the new climate protocols after days of negotiation.</p>
-                             <div class="card-overlay-footer">
-                                 <div><i class="ri-user-line me-1"></i> James Bond • <i class="ri-time-line me-1"></i> 2h ago</div>
-                                 <i class="ri-heart-line fs-5"></i>
-                             </div>
-                         </div>
-                     </a>
+    <div class="fixed top-20 -left-20 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 blob-animate pointer-events-none"></div>
+    <div class="fixed bottom-20 -right-20 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 blob-animate-delay pointer-events-none"></div>
+
+    <section class="py-16 px-4 relative z-10">
+        <div class="container mx-auto max-w-7xl">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">General News</h2>
+                    <p class="text-lg text-gray-600">Stay updated with the latest stories from around the world.</p>
                 </div>
-                <div class="col-lg-4">
-                    <div class="d-flex flex-column gap-3">
-                        <div class="card-horizontal">
-                            <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=400" alt="News">
-                            <div class="content">
-                                <h5 class="article-title fs-6 mb-1">New policies affecting local businesses</h5>
-                                <p class="article-desc mb-2" style="-webkit-line-clamp: 2;">Local businesses are adapting...</p>
-                                <div class="article-footer pt-2 mt-0 border-0 p-0">
-                                    <span><i class="ri-user-3-line"></i> Alex</span>
-                                    <span><i class="ri-time-line"></i> 2h</span>
-                                    <i class="ri-heart-line text-danger"></i>
+                <a href="#" class="group flex items-center gap-2 text-blue-700 font-bold hover:text-blue-900 transition py-2 px-4 rounded-full hover:bg-blue-50/50">
+                    View All
+                    <i class="ri-arrow-right-line transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <article class="flex flex-col h-full rounded-3xl overflow-hidden transition-all duration-300 group bg-white/80 backdrop-blur-[20px] border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 hover:border-blue-200/50">
+                    <div class="relative overflow-hidden h-52 flex-shrink-0 rounded-t-3xl m-2 mb-0">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="News" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 rounded-2xl">
+                        <div class="absolute top-4 left-4 bg-blue-600/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Tech</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-blue-700 cursor-pointer transition leading-tight">
+                            AI Revolution: How New Tools Are Shaping the Future
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-6 line-clamp-3 flex-grow leading-relaxed">
+                            Major tech companies unveiled their latest AI models today, promising to change how we work and live significantly.
+                        </p>
+                        <div class="flex items-center justify-between pt-5 border-t border-gray-200/50 mt-auto">
+                            <div class="flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Author" class="w-9 h-9 rounded-full object-cover ring-2 ring-white">
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-bold text-gray-800">John Doe</span>
+                                    <span class="text-xs text-gray-500 font-medium">2 hours ago</span>
                                 </div>
                             </div>
+                            <button class="text-gray-400 hover:text-red-500 hover:bg-red-50/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                                <i class="ri-heart-3-line text-xl"></i>
+                            </button>
                         </div>
-                        <div class="card-horizontal">
-                            <img src="https://images.unsplash.com/photo-1523995462485-65173881501c?w=400" alt="News">
-                            <div class="content">
-                                <h5 class="article-title fs-6 mb-1">University reform bill passes</h5>
-                                <p class="article-desc mb-2" style="-webkit-line-clamp: 2;">Students rejoice as new bill...</p>
-                                <div class="article-footer pt-2 mt-0 border-0 p-0">
-                                    <span><i class="ri-user-3-line"></i> Sarah</span>
-                                    <span><i class="ri-time-line"></i> 4h</span>
-                                    <i class="ri-heart-line text-danger"></i>
+                    </div>
+                </article>
+
+                <article class="flex flex-col h-full rounded-3xl overflow-hidden transition-all duration-300 group bg-white/80 backdrop-blur-[20px] border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 hover:border-green-200/50">
+                    <div class="relative overflow-hidden h-52 flex-shrink-0 rounded-t-3xl m-2 mb-0">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="News" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 rounded-2xl">
+                        <div class="absolute top-4 left-4 bg-green-600/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Food</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-green-700 cursor-pointer transition leading-tight">
+                            Top 10 Healthy Recipes for a Productive Week
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-6 line-clamp-3 flex-grow leading-relaxed">
+                            Discover simple and nutritious meals that you can prepare in under 30 minutes to boost your energy levels.
+                        </p>
+                        <div class="flex items-center justify-between pt-5 border-t border-gray-200/50 mt-auto">
+                            <div class="flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Author" class="w-9 h-9 rounded-full object-cover ring-2 ring-white">
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-bold text-gray-800">Sarah Smith</span>
+                                    <span class="text-xs text-gray-500 font-medium">Jan 14, 2024</span>
                                 </div>
                             </div>
+                            <button class="text-gray-400 hover:text-red-500 hover:bg-red-50/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                                <i class="ri-heart-3-line text-xl"></i>
+                            </button>
                         </div>
-                        <div class="card-horizontal">
-                            <img src="https://images.unsplash.com/photo-1546422904-90eab23c3d7e?w=400" alt="News">
-                            <div class="content">
-                                <h5 class="article-title fs-6 mb-1">Medical breakthrough announced</h5>
-                                <p class="article-desc mb-2" style="-webkit-line-clamp: 2;">Scientists discover new cure...</p>
-                                <div class="article-footer pt-2 mt-0 border-0 p-0">
-                                    <span><i class="ri-user-3-line"></i> Dr. Mike</span>
-                                    <span><i class="ri-time-line"></i> 5h</span>
-                                    <i class="ri-heart-line text-danger"></i>
+                    </div>
+                </article>
+
+                <article class="flex flex-col h-full rounded-3xl overflow-hidden transition-all duration-300 group bg-white/80 backdrop-blur-[20px] border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 hover:border-orange-200/50">
+                    <div class="relative overflow-hidden h-52 flex-shrink-0 rounded-t-3xl m-2 mb-0">
+                        <img src="https://images.unsplash.com/photo-1517466787929-bc90951d64b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="News" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 rounded-2xl">
+                        <div class="absolute top-4 left-4 bg-orange-500/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Sport</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-orange-700 cursor-pointer transition leading-tight">
+                            Championship Finals: An Unforgettable Night
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-6 line-clamp-3 flex-grow leading-relaxed">
+                            Fans witnessed one of the greatest comebacks in sports history during last night's thrilling final match.
+                        </p>
+                        <div class="flex items-center justify-between pt-5 border-t border-gray-200/50 mt-auto">
+                            <div class="flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/men/86.jpg" alt="Author" class="w-9 h-9 rounded-full object-cover ring-2 ring-white">
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-bold text-gray-800">Mike Ross</span>
+                                    <span class="text-xs text-gray-500 font-medium">Yesterday</span>
                                 </div>
                             </div>
+                            <button class="text-gray-400 hover:text-red-500 hover:bg-red-50/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                                <i class="ri-heart-3-line text-xl"></i>
+                            </button>
                         </div>
+                    </div>
+                </article>
+
+                <article class="flex flex-col h-full rounded-3xl overflow-hidden transition-all duration-300 group bg-white/80 backdrop-blur-[20px] border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 hover:border-purple-200/50">
+                    <div class="relative overflow-hidden h-52 flex-shrink-0 rounded-t-3xl m-2 mb-0">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="News" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 rounded-2xl">
+                        <div class="absolute top-4 left-4 bg-purple-600/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">Business</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-purple-700 cursor-pointer transition leading-tight">
+                            Global Markets Hit New Record Highs
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-6 line-clamp-3 flex-grow leading-relaxed">
+                            Investors remain optimistic as major indices reach unprecedented levels this quarter amidst economic growth.
+                        </p>
+                        <div class="flex items-center justify-between pt-5 border-t border-gray-200/50 mt-auto">
+                            <div class="flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Author" class="w-9 h-9 rounded-full object-cover ring-2 ring-white">
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-bold text-gray-800">Emma Watson</span>
+                                    <span class="text-xs text-gray-500 font-medium">5 hours ago</span>
+                                </div>
+                            </div>
+                            <button class="text-gray-400 hover:text-red-500 hover:bg-red-50/50 p-2 rounded-full transition-all duration-300 active:scale-90">
+                                <i class="ri-heart-3-line text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Politics | Opinion | Environment Section -->
+    <section class="py-16 lg:py-20 px-4 bg-white relative z-10" id="poe-section">
+        <div class="max-w-7xl mx-auto">
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Politics Column -->
+                <div class="space-y-5">
+                    <article class="relative h-[260px] rounded-[1.75rem] overflow-hidden shadow-[0_18px_45px_-18px_rgba(0,0,0,0.25)] group">
+                        <img src="https://images.unsplash.com/photo-1509099836639-18ba02b3e37c?auto=format&fit=crop&w=1200&q=80" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Politics">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent"></div>
+                        <div class="absolute top-5 left-5 inline-flex items-center gap-2 bg-rose-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow">Politics</div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-xl lg:text-2xl font-bold text-white leading-snug mb-3 group-hover:text-rose-100 transition-colors">New coalition maps out reforms ahead of national elections</h3>
+                            <div class="flex items-center gap-3 text-sm text-slate-200">
+                                <span class="flex items-center gap-1"><i class="ri-time-line"></i> 45 mins ago</span>
+                                <span class="flex items-center gap-1"><i class="ri-user-line"></i> Political Desk</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="space-y-4">
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-rose-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Parliament">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-rose-600">Parliament debates digital governance charter</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-calendar-line"></i> Jan 16, 2026</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-rose-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1509099836639-18ba02b3e37c?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Summit">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-rose-600">Regional summit sets timeline for trade pact</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-flashlight-line"></i> Breaking</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-rose-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1530023367847-a683933f4177?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Security">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-rose-600">Security council approves new cyber taskforce</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-user-3-line"></i> By Lina Farouk</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Opinion Column -->
+                <div class="space-y-5">
+                    <article class="relative h-[260px] rounded-[1.75rem] overflow-hidden shadow-[0_18px_45px_-18px_rgba(0,0,0,0.25)] group">
+                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Opinion">
+                        <div class="absolute inset-0 bg-gradient-to-t from-amber-900 via-amber-900/40 to-transparent"></div>
+                        <div class="absolute top-5 left-5 inline-flex items-center gap-2 bg-amber-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow">Opinion</div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-xl lg:text-2xl font-bold text-white leading-snug mb-3 group-hover:text-amber-100 transition-colors">Why cities thrive when they slow down traffic</h3>
+                            <div class="flex items-center gap-3 text-sm text-amber-50">
+                                <span class="flex items-center gap-1"><i class="ri-edit-line"></i> Editorial</span>
+                                <span class="flex items-center gap-1"><i class="ri-time-line"></i> 3 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="space-y-4">
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-amber-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1454165205744-3b78555e5572?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Remote work">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-amber-600">The remote-work backlash misses the point</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-user-voice-line"></i> By Kareem Said</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-amber-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Data">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-amber-600">Data dignity is the next civil right</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-calendar-line"></i> Jan 15, 2026</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-amber-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Education">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-amber-600">Universities need to teach resilience, not just skills</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-lightbulb-flash-line"></i> Perspective</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Environment Column -->
+                <div class="space-y-5">
+                    <article class="relative h-[260px] rounded-[1.75rem] overflow-hidden shadow-[0_18px_45px_-18px_rgba(0,0,0,0.25)] group">
+                        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1200&q=80" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Environment">
+                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-900 via-emerald-900/40 to-transparent"></div>
+                        <div class="absolute top-5 left-5 inline-flex items-center gap-2 bg-emerald-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow">Environment</div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-xl lg:text-2xl font-bold text-white leading-snug mb-3 group-hover:text-emerald-100 transition-colors">Coastal cities test blue-carbon shields to slow erosion</h3>
+                            <div class="flex items-center gap-3 text-sm text-emerald-50">
+                                <span class="flex items-center gap-1"><i class="ri-earth-line"></i> Climate Desk</span>
+                                <span class="flex items-center gap-1"><i class="ri-time-line"></i> 1 hour ago</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="space-y-4">
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-emerald-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Solar">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-emerald-600">Solar rooftops surpass a million installations this year</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-calendar-line"></i> Jan 12, 2026</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-emerald-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Recycling">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-emerald-600">New recycling startups tackle textile waste at scale</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-leaf-line"></i> Eco Lab</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-emerald-100 hover:shadow-lg transition group">
+                            <div class="w-24 h-20 rounded-xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Wildlife">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-slate-900 leading-snug mb-1 group-hover:text-emerald-600">Wildlife corridors reopen after two decades of closures</h4>
+                                <div class="text-xs text-slate-500 flex items-center gap-2"><i class="ri-time-line"></i> Updated today</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. ECONOMY (Dark Theme) -->
-    <section class="section-padding bg-dark-custom">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper" style="border-color: #444;">
-                <h3 class="section-title text-white">Economy</h3>
-                <a href="#" class="btn btn-outline-light rounded-pill btn-sm">Analysis</a>
+    <!-- Video Section -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        /* Custom Scrollbar for the list */
+        .video-list::-webkit-scrollbar { width: 6px; }
+        .video-list::-webkit-scrollbar-track { background: transparent; }
+        .video-list::-webkit-scrollbar-thumb { background-color: #e2e8f0; border-radius: 20px; }
+        .video-list::-webkit-scrollbar-thumb:hover { background-color: #cbd5e1; }
+    </style>
+    
+    <section class="py-16 px-4 relative z-10 bg-slate-50" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div class="max-w-7xl mx-auto">
+        
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900">Featured Videos</h2>
+                    <p class="text-slate-500 mt-2">Watch the latest property tours and market analysis.</p>
+                </div>
+                <button class="hidden md:flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition">
+                    View All Videos <i class="ri-arrow-right-line"></i>
+                </button>
             </div>
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-6">
-                    <div class="article-card bg-transparent border-0">
-                        <img src="https://images.unsplash.com/photo-1611974765270-ca12586343bb?w=800" class="rounded-3 shadow w-100" alt="Economy">
-                        <div class="mt-3">
-                            <span class="text-warning small fw-bold text-uppercase">Exclusive</span>
-                            <h2 class="article-title text-white fs-3 mt-2">Inflation rates hit a 5-year low as new policies take effect</h2>
-                            <p class="article-desc text-white-50">Experts suggest that the recent fiscal strategies implemented by the central bank have successfully curbed the rising inflation.</p>
-                            <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-3 text-white-50">
-                                <span><i class="ri-pencil-line"></i> B. Gates</span>
-                                <span><i class="ri-calendar-line"></i> Jan 09</span>
-                                <i class="ri-heart-line cursor-pointer text-white"></i>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px] lg:h-[500px]">
+                
+                <div class="lg:col-span-2 relative group rounded-[2rem] overflow-hidden shadow-2xl shadow-blue-900/10 bg-black">
+                    <img id="mainVideoImage" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80" 
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500" alt="Main Video">
+                    
+                    <a href="#" class="absolute inset-0 flex items-center justify-center z-10">
+                        <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                <i class="ri-play-fill text-3xl text-blue-600 ml-1"></i>
+                            </div>
+                        </div>
+                    </a>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                        <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 inline-block">Now Playing</span>
+                        <h3 id="mainVideoTitle" class="text-3xl font-bold text-white mb-2 leading-tight">Modern Minimalist Villa Tour in California</h3>
+                        <div class="flex items-center gap-4 text-slate-300 text-sm">
+                            <span id="mainVideoAuthor"><i class="ri-user-line mr-1"></i> By Ahmed Ali</span>
+                            <span><i class="ri-time-line mr-1"></i> 12:45 mins</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1 bg-white rounded-[2rem] border border-slate-100 p-6 flex flex-col h-full shadow-lg shadow-slate-200/50">
+                    <h4 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <i class="ri-play-list-2-line text-blue-600"></i> Up Next
+                    </h4>
+                    
+                    <div class="video-list flex-1 overflow-y-auto pr-2 space-y-4">
+                        
+                        <div class="cursor-pointer group flex gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors" onclick="changeVideo('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80', 'Luxury Penthouse with Ocean View', 'Sarah Smith')">
+                            <div class="relative w-28 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i class="ri-play-circle-fill text-white text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <h5 class="text-sm font-bold text-slate-900 leading-snug mb-1 group-hover:text-blue-600 transition-colors">Luxury Penthouse with Ocean View</h5>
+                                <span class="text-xs text-slate-400">8:30 mins</span>
+                            </div>
+                        </div>
+
+                        <div class="cursor-pointer group flex gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors" onclick="changeVideo('https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80', 'Top 5 Investment Tips for 2024', 'Mike Ross')">
+                            <div class="relative w-28 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i class="ri-play-circle-fill text-white text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <h5 class="text-sm font-bold text-slate-900 leading-snug mb-1 group-hover:text-blue-600 transition-colors">Top 5 Investment Tips for 2024</h5>
+                                <span class="text-xs text-slate-400">15:00 mins</span>
+                            </div>
+                        </div>
+
+                        <div class="cursor-pointer group flex gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors" onclick="changeVideo('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80', 'Inside the $50M Mega Mansion', 'John Doe')">
+                            <div class="relative w-28 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i class="ri-play-circle-fill text-white text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <h5 class="text-sm font-bold text-slate-900 leading-snug mb-1 group-hover:text-blue-600 transition-colors">Inside the $50M Mega Mansion</h5>
+                                <span class="text-xs text-slate-400">22:15 mins</span>
+                            </div>
+                        </div>
+
+                        <div class="cursor-pointer group flex gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors" onclick="changeVideo('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=800&q=80', 'Affordable Housing Projects Launch', 'Emma Watson')">
+                            <div class="relative w-28 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i class="ri-play-circle-fill text-white text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <h5 class="text-sm font-bold text-slate-900 leading-snug mb-1 group-hover:text-blue-600 transition-colors">Affordable Housing Projects Launch</h5>
+                                <span class="text-xs text-slate-400">5:45 mins</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ECONOMY SECTION -->
+    <section class="py-20 px-4 relative z-10 bg-white">
+        <div class="container mx-auto max-w-7xl">
+            
+            <!-- Header -->
+            <div class="flex items-end justify-between mb-10">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900">Economy & Markets</h2>
+                    <p class="text-gray-500 mt-2">Track global markets and financial insights.</p>
+                </div>
+                <a href="#" class="hidden md:flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition">
+                    Market Watch <i class="ri-bar-chart-groupled-line"></i>
+                </a>
+            </div>
+
+            <!-- Market Tickers -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <!-- Ticker Item -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-start gap-1 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">S&P 500</span>
+                        <i class="ri-arrow-right-up-line text-emerald-500"></i>
+                    </div>
+                    <div class="flex items-end gap-2 w-full">
+                        <span class="text-xl font-bold text-slate-800">4,783.45</span>
+                        <span class="text-xs font-bold text-emerald-500 bg-emerald-100 px-1.5 py-0.5 rounded">+1.24%</span>
+                    </div>
+                </div>
+                <!-- Ticker Item -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-start gap-1 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nasdaq</span>
+                        <i class="ri-arrow-right-up-line text-emerald-500"></i>
+                    </div>
+                    <div class="flex items-end gap-2 w-full">
+                        <span class="text-xl font-bold text-slate-800">16,420.10</span>
+                        <span class="text-xs font-bold text-emerald-500 bg-emerald-100 px-1.5 py-0.5 rounded">+0.85%</span>
+                    </div>
+                </div>
+                <!-- Ticker Item -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-start gap-1 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Gold</span>
+                        <i class="ri-arrow-right-down-line text-rose-500"></i>
+                    </div>
+                    <div class="flex items-end gap-2 w-full">
+                        <span class="text-xl font-bold text-slate-800">2,034.40</span>
+                        <span class="text-xs font-bold text-rose-500 bg-rose-100 px-1.5 py-0.5 rounded">-0.12%</span>
+                    </div>
+                </div>
+                <!-- Ticker Item -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-start gap-1 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">BTC / USD</span>
+                        <i class="ri-arrow-right-up-line text-emerald-500"></i>
+                    </div>
+                    <div class="flex items-end gap-2 w-full">
+                        <span class="text-xl font-bold text-slate-800">48,200.00</span>
+                        <span class="text-xs font-bold text-emerald-500 bg-emerald-100 px-1.5 py-0.5 rounded">+3.50%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Grid: 1 Big Left, 2 Right Stacked -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Main Featured Article -->
+                <div class="group relative rounded-[2rem] overflow-hidden h-[500px] shadow-xl">
+                    <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Economy News">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-90"></div>
+                    
+                    <div class="absolute bottom-0 left-0 right-0 p-8">
+                        <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full mb-3 inline-block">Analysis</span>
+                        <h3 class="text-3xl font-bold text-white mb-3 leading-snug group-hover:text-blue-200 transition-colors">Digital Currencies: The Era of Central Bank Innovation</h3>
+                        <p class="text-slate-200 mb-6 line-clamp-2">As central banks around the world navigate the complexities of digital finance, new regulations are paving the way for wider adoption.</p>
+                        
+                        <div class="flex items-center gap-4 text-slate-300 text-sm border-t border-white/10 pt-4">
+                            <span class="flex items-center gap-2"><img src="https://randomuser.me/api/portraits/men/15.jpg" class="w-6 h-6 rounded-full"> Robert Fox</span>
+                            <span>&bull;</span>
+                            <span>Jan 15, 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: List of items -->
+                <div class="flex flex-col gap-6">
+                    
+                    <!-- Item 1 -->
+                    <div class="flex-1 bg-white border border-slate-100 rounded-[2rem] p-6 flex gap-6 hover:shadow-lg transition-shadow group cursor-pointer">
+                        <div class="w-1/3 rounded-xl overflow-hidden relative">
+                             <img src="https://images.unsplash.com/photo-1611974765270-ca6e1128adeb?auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Stock Market">
+                        </div>
+                        <div class="w-2/3 flex flex-col justify-center">
+                            <span class="text-xs font-bold text-blue-600 mb-2 uppercase">Stock Market</span>
+                            <h4 class="text-xl font-bold text-slate-800 mb-2 leading-tight group-hover:text-blue-600 transition-colors">Tech Giants Report Quarter Earnings Above Expectations</h4>
+                            <p class="text-slate-500 text-sm line-clamp-2">Revenue growth driven by cloud computing and AI investments has surged past analyst predictions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="flex-1 bg-white border border-slate-100 rounded-[2rem] p-6 flex gap-6 hover:shadow-lg transition-shadow group cursor-pointer">
+                        <div class="w-1/3 rounded-xl overflow-hidden relative">
+                             <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform" alt="Sustainability">
+                        </div>
+                        <div class="w-2/3 flex flex-col justify-center">
+                            <span class="text-xs font-bold text-emerald-600 mb-2 uppercase">Sustainability</span>
+                            <h4 class="text-xl font-bold text-slate-800 mb-2 leading-tight group-hover:text-emerald-600 transition-colors">Green Bonds: Financing the Transition to Net Zero</h4>
+                            <p class="text-slate-500 text-sm line-clamp-2">Global issuance of green bonds hit a record high this year as investors seek sustainable portfolios.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- BANKS & STOCK SECTION -->
+    <section class="py-24 bg-slate-50 relative overflow-hidden" id="banks-section">
+        <div class="container mx-auto max-w-7xl px-4 relative z-10">
+            
+            <div class="flex items-end justify-between mb-12">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900">Banks & Stock Market</h2>
+                    <p class="text-slate-500 mt-2">Live exchange rates and banking sector updates.</p>
+                </div>
+                <a href="#" class="hidden md:flex items-center gap-2 text-blue-700 font-semibold hover:text-blue-900 transition">
+                    Full Market Report <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Main News Column -->
+                <div class="lg:col-span-2 flex flex-col gap-8">
+                    
+                    <!-- Hero Bank News -->
+                    <article class="relative h-[400px] rounded-[2.5rem] overflow-hidden group shadow-lg cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1601597111158-2fceff292cd4?auto=format&fit=crop&w=1200&q=80" 
+                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Bank News">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+                        
+                        <div class="absolute bottom-0 left-0 p-8 w-full md:w-3/4">
+                            <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full mb-4 inline-block shadow-sm">Banking Sector</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight group-hover:text-blue-200 transition-colors">
+                                Central Bank Announces New Interest Rates for the Coming Fiscal Year
+                            </h3>
+                            <div class="flex items-center gap-3 text-slate-300 text-xs font-medium">
+                                <span class="flex items-center gap-1"><i class="ri-time-line"></i> 2 hours ago</span>
+                                <span>&bull;</span>
+                                <span>By Financial Desk</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Secondary News Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-5 rounded-[2rem] border border-slate-100 hover:border-blue-100 hover:shadow-xl transition-all group cursor-pointer">
+                             <div class="flex justify-between items-start mb-4">
+                                 <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                                     <i class="ri-bank-card-2-line text-xl"></i>
+                                 </div>
+                                 <i class="ri-arrow-right-up-line text-slate-300 group-hover:text-blue-600 transition-colors"></i>
+                             </div>
+                             <h4 class="text-lg font-bold text-slate-800 mb-2 leading-snug group-hover:text-blue-700 transition-colors">Digital Banking Users Surge by 40% in Q3</h4>
+                             <p class="text-slate-500 text-xs line-clamp-2">Mobile apps become the primary touchpoint for millions of customers.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-[2rem] border border-slate-100 hover:border-blue-100 hover:shadow-xl transition-all group cursor-pointer">
+                             <div class="flex justify-between items-start mb-4">
+                                 <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+                                     <i class="ri-safe-2-line text-xl"></i>
+                                 </div>
+                                 <i class="ri-arrow-right-up-line text-slate-300 group-hover:text-purple-600 transition-colors"></i>
+                             </div>
+                             <h4 class="text-lg font-bold text-slate-800 mb-2 leading-snug group-hover:text-purple-700 transition-colors">New Security Measures for Online Transactions</h4>
+                             <p class="text-slate-500 text-xs line-clamp-2">Banks implement AI-driven fraud detection systems worldwide.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Sidebar Market Data -->
+                <div class="lg:col-span-1 space-y-6">
+                    
+                    <!-- Exchange Rates Widget -->
+                    <div class="bg-white rounded-[2rem] p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-slate-100/50">
+                        <div class="flex items-center justify-between mb-6">
+                            <h4 class="font-bold text-slate-800 flex items-center gap-2">
+                                <i class="ri-exchange-dollar-line text-blue-600"></i> Exchange Rates
+                            </h4>
+                            <span class="text-[10px] text-slate-400 font-semibold bg-slate-50 px-2 py-1 rounded">LIVE</span>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 group hover:bg-blue-50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-xs font-bold text-slate-700 border border-slate-100">🇺🇸</div>
+                                    <div>
+                                        <div class="text-xs font-bold text-slate-700">USD</div>
+                                        <div class="text-[10px] text-slate-400">US Dollar</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xs font-bold text-slate-800">48.20</div>
+                                    <div class="text-[10px] text-emerald-500 font-bold flex items-center justify-end gap-1"><i class="ri-arrow-up-fill"></i>0.05%</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 group hover:bg-blue-50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-xs font-bold text-slate-700 border border-slate-100">🇪🇺</div>
+                                    <div>
+                                        <div class="text-xs font-bold text-slate-700">EUR</div>
+                                        <div class="text-[10px] text-slate-400">Euro</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xs font-bold text-slate-800">52.45</div>
+                                    <div class="text-[10px] text-rose-500 font-bold flex items-center justify-end gap-1"><i class="ri-arrow-down-fill"></i>0.12%</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 group hover:bg-blue-50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-xs font-bold text-slate-700 border border-slate-100">🇬🇧</div>
+                                    <div>
+                                        <div class="text-xs font-bold text-slate-700">GBP</div>
+                                        <div class="text-[10px] text-slate-400">British Pound</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xs font-bold text-slate-800">61.10</div>
+                                    <div class="text-[10px] text-emerald-500 font-bold flex items-center justify-end gap-1"><i class="ri-arrow-up-fill"></i>0.08%</div>
+                                </div>
+                            </div>
+                            
+                             <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 group hover:bg-blue-50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-xs font-bold text-slate-700 border border-slate-100">🇸🇦</div>
+                                    <div>
+                                        <div class="text-xs font-bold text-slate-700">SAR</div>
+                                        <div class="text-[10px] text-slate-400">Saudi Riyal</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xs font-bold text-slate-800">12.85</div>
+                                    <div class="text-[10px] text-slate-400 font-bold flex items-center justify-end gap-1"><i class="ri-subtract-line"></i>0.00%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Movers Widget -->
+                    <div class="bg-blue-600 rounded-[2rem] p-6 text-white relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                        <div class="relative z-10">
+                            <h4 class="font-bold mb-4 flex items-center gap-2">
+                                <i class="ri-line-chart-line"></i> Top Movers
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                                    <span class="font-bold text-sm">CIB</span>
+                                    <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-1 rounded font-bold">+2.4%</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                                    <span class="font-bold text-sm">Hala Finance</span>
+                                    <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-1 rounded font-bold">+1.8%</span>
+                                </div>
+                                <div class="flex justify-between items-center opacity-80 decoration-slate-400">
+                                    <span class="font-bold text-sm">Fawry</span>
+                                    <span class="bg-rose-500/20 text-rose-300 text-xs px-2 py-1 rounded font-bold">-0.5%</span>
+                                </div>
+                            </div>
+                            <button class="w-full mt-5 bg-white text-blue-600 py-2.5 rounded-xl text-xs font-bold hover:bg-blue-50 transition-colors">View All Stocks</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white relative overflow-hidden" id="real-estate-section">
+        <!-- Background Elements -->
+        <div class="absolute top-0 left-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-50"></div>
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-100 rounded-full blur-3xl translate-x-1/3 translate-y-1/3 pointer-events-none opacity-50"></div>
+
+        <div class="container mx-auto max-w-7xl relative z-10 px-4">
+            
+            <!-- Standard Header -->
+            <div class="flex items-end justify-between mb-16">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900">Real Estate News</h2>
+                    <p class="text-slate-500 mt-2">Latest updates from top developments around the world.</p>
+                </div>
+                <button class="hidden md:flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition">
+                    View All News <i class="ri-arrow-right-line"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Card 1 -->
+                <div class="group relative h-[500px] rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1600596542815-3ad19fb2a217?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="News">
+                    
+                    <!-- Solid Gradient Overlay (Clearer Text) -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                    
+                    <!-- Top Badge -->
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">Palm Hills</span>
+                    </div>
+
+                    <!-- Content (No Box, Just Clean Text) -->
+                    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-xl font-bold text-white mb-3 leading-tight drop-shadow-md group-hover:text-blue-200 transition-colors">New Phase Launching Soon in October</h3>
+                        
+                        <p class="text-gray-300 text-sm line-clamp-2 mb-6 font-medium leading-relaxed">
+                            Premium villas and apartments with direct golf views starting next month.
+                        </p>
+                        
+                        <!-- Footer Line -->
+                        <div class="flex items-center justify-between border-t border-gray-700/50 pt-4 mt-2">
+                            <div class="flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-8 h-8 rounded-full border-2 border-gray-600 object-cover">
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-gray-200">Sara Ali</span>
+                                    <span class="text-[10px] text-gray-400">2 mins ago</span>
+                                </div>
+                            </div>
+                            <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-blue-600 transition-all">
+                                <i class="ri-arrow-right-line"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 (Dropped Down) -->
+                <div class="group relative h-[500px] rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 bg-gray-900 lg:mt-12">
+                     <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="News">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                    
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-purple-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">Mivida</span>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-xl font-bold text-white mb-3 leading-tight drop-shadow-md group-hover:text-purple-200 transition-colors">Sustainable Living: Green Energy Adoption</h3>
+                        
+                        <p class="text-gray-300 text-sm line-clamp-2 mb-6 font-medium leading-relaxed">
+                            The compound announces 100% solar energy reliance for public lighting.
+                        </p>
+                        
+                        <div class="flex items-center justify-between border-t border-gray-700/50 pt-4 mt-2">
+                            <div class="flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-8 h-8 rounded-full border-2 border-gray-600 object-cover">
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-gray-200">Omar Taha</span>
+                                    <span class="text-[10px] text-gray-400">1 hour ago</span>
+                                </div>
+                            </div>
+                            <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-purple-600 transition-all">
+                                <i class="ri-arrow-right-line"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group relative h-[500px] rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="News">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                    
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-orange-500 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">Marassi</span>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-xl font-bold text-white mb-3 leading-tight drop-shadow-md group-hover:text-orange-200 transition-colors">Summer Festival Lineup Revealed</h3>
+                        
+                        <p class="text-gray-300 text-sm line-clamp-2 mb-6 font-medium leading-relaxed">
+                           Top international artists confirmed for this year's summer beach festival.
+                        </p>
+                        
+                        <div class="flex items-center justify-between border-t border-gray-700/50 pt-4 mt-2">
+                            <div class="flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/women/65.jpg" class="w-8 h-8 rounded-full border-2 border-gray-600 object-cover">
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-gray-200">Nour Ezz</span>
+                                    <span class="text-[10px] text-gray-400">3 hours ago</span>
+                                </div>
+                            </div>
+                            <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-orange-500 transition-all">
+                                <i class="ri-arrow-right-line"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 (Dropped Down) -->
+                <div class="group relative h-[500px] rounded-[2rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 bg-gray-900 lg:mt-12">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="News">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                    
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-teal-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">SODIC West</span>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-xl font-bold text-white mb-3 leading-tight drop-shadow-md group-hover:text-teal-200 transition-colors">Expansion Plans Approved</h3>
+                        
+                        <p class="text-gray-300 text-sm line-clamp-2 mb-6 font-medium leading-relaxed">
+                            New commercial district to be added to the western expansion plan.
+                        </p>
+                        
+                        <div class="flex items-center justify-between border-t border-gray-700/50 pt-4 mt-2">
+                            <div class="flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/men/86.jpg" class="w-8 h-8 rounded-full border-2 border-gray-600 object-cover">
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-gray-200">Karim Samy</span>
+                                    <span class="text-[10px] text-gray-400">Yesterday</span>
+                                    </div>
+                                </div>
+                                <button class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-teal-600 transition-all">
+                                    <i class="ri-arrow-right-line"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                     <div class="row g-4">
-                         <div class="col-sm-6">
-                             <div class="article-card bg-transparent">
-                                 <img src="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=400" alt="Currency" class="mb-2 rounded">
-                                 <h5 class="article-title text-white fs-6">Dollar steadies against major currencies</h5>
-                                 <p class="article-desc text-white-50 small">Updates on the global forex market movements.</p>
-                                 <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-0 text-white-50">
-                                     <span class="small"><i class="ri-pencil-line"></i> F. X.</span>
-                                     <span class="small"><i class="ri-time-line"></i> 1h</span>
-                                     <i class="ri-heart-line small text-white"></i>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-sm-6">
-                             <div class="article-card bg-transparent">
-                                 <img src="https://images.unsplash.com/photo-1611095790444-1dfa35e37b52?w=400" alt="Trade" class="mb-2 rounded">
-                                 <h5 class="article-title text-white fs-6">Exports rise by 12% in Q4 2025</h5>
-                                 <p class="article-desc text-white-50 small">Positive outlook for international trade volume.</p>
-                                 <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-0 text-white-50">
-                                     <span class="small"><i class="ri-pencil-line"></i> T. Ministry</span>
-                                     <span class="small"><i class="ri-time-line"></i> 3h</span>
-                                     <i class="ri-heart-line small text-white"></i>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-sm-6">
-                             <div class="article-card bg-transparent">
-                                 <img src="https://images.unsplash.com/photo-1554224164-3ad2104a1fc6?w=400" alt="Stocks" class="mb-2 rounded">
-                                 <h5 class="article-title text-white fs-6">Tech stocks rally continues into week</h5>
-                                 <p class="article-desc text-white-50 small">Silicon Valley giants see green across the board.</p>
-                                 <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-0 text-white-50">
-                                     <span class="small"><i class="ri-pencil-line"></i> W. Street</span>
-                                     <span class="small"><i class="ri-time-line"></i> 5h</span>
-                                     <i class="ri-heart-line small text-white"></i>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-sm-6">
-                             <div class="article-card bg-transparent">
-                                 <img src="https://images.unsplash.com/photo-1579532507281-2be43eb19506?w=400" alt="Crypto" class="mb-2 rounded">
-                                 <h5 class="article-title text-white fs-6">Crypto regulation framework proposed</h5>
-                                 <p class="article-desc text-white-50 small">Governments seek to stabilize digital assets.</p>
-                                 <div class="article-footer border-top border-secondary border-opacity-25 pt-2 mt-0 text-white-50">
-                                     <span class="small"><i class="ri-pencil-line"></i> S. Nakamoto</span>
-                                     <span class="small"><i class="ri-time-line"></i> 6h</span>
-                                     <i class="ri-heart-line small text-white"></i>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section class="py-24 bg-gray-50 relative overflow-hidden" id="technology-section">
+        <div class="container mx-auto max-w-7xl relative z-10 px-4">
+            
+            <div class="flex items-end justify-between mb-12">
+                <div>
+                    <span class="text-blue-600 font-bold tracking-wider uppercase text-sm">Innovation</span>
+                    <h2 class="text-4xl font-bold text-gray-900 mt-2">Technology News</h2>
+                </div>
+                <button class="flex items-center gap-2 text-gray-600 font-semibold hover:text-blue-600 transition">
+                    View All <i class="ri-arrow-right-line"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Tech Card 1 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 bg-gray-900 h-96">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tech">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
+                    
+                    <div class="absolute top-4 right-4">
+                        <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:text-red-500 hover:bg-white/30 transition-all">
+                            <i class="ri-heart-line text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <div class="mb-3">
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">AI</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 leading-tight drop-shadow-md group-hover:text-blue-300 transition-colors">The Future of AI: Beyond Generative Models</h3>
+                        <div class="flex items-center gap-4 text-xs text-gray-300">
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-user-line"></i>
+                                <span>Alex Chen</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-calendar-line"></i>
+                                <span>Oct 24, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Card 2 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 bg-gray-900 h-96">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tech">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
+                    
+                    <div class="absolute top-4 right-4">
+                        <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:text-red-500 hover:bg-white/30 transition-all">
+                            <i class="ri-heart-line text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <div class="mb-3">
+                            <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">Cybersecurity</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 leading-tight drop-shadow-md group-hover:text-green-300 transition-colors">Zero Trust Architecture Explained</h3>
+                        <div class="flex items-center gap-4 text-xs text-gray-300">
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-user-line"></i>
+                                <span>Sarah Jones</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-calendar-line"></i>
+                                <span>Oct 22, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Card 3 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 bg-gray-900 h-96">
+                    <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tech">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
+                    
+                    <div class="absolute top-4 right-4">
+                        <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:text-red-500 hover:bg-white/30 transition-all">
+                            <i class="ri-heart-line text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <div class="mb-3">
+                            <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">VR/AR</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 leading-tight drop-shadow-md group-hover:text-purple-300 transition-colors">The Next Generation of Mixed Reality</h3>
+                        <div class="flex items-center gap-4 text-xs text-gray-300">
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-user-line"></i>
+                                <span>Mike Ross</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-calendar-line"></i>
+                                <span>Oct 20, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Card 4 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 bg-gray-900 h-96">
+                    <img src="https://images.unsplash.com/photo-1555664424-778a69022365?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tech">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
+                    
+                    <div class="absolute top-4 right-4">
+                        <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:text-red-500 hover:bg-white/30 transition-all">
+                            <i class="ri-heart-line text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <div class="mb-3">
+                            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">Development</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 leading-tight drop-shadow-md group-hover:text-orange-300 transition-colors">Rust vs Go: Creating Modern Backends</h3>
+                        <div class="flex items-center gap-4 text-xs text-gray-300">
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-user-line"></i>
+                                <span>Emily White</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-calendar-line"></i>
+                                <span>Oct 18, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Card 5 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 bg-gray-900 h-96">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tech">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
+                    
+                    <div class="absolute top-4 right-4">
+                        <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:text-red-500 hover:bg-white/30 transition-all">
+                            <i class="ri-heart-line text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <div class="mb-3">
+                            <span class="bg-teal-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">Gadgets</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 leading-tight drop-shadow-md group-hover:text-teal-300 transition-colors">Smart Home Tech Trends for 2025</h3>
+                        <div class="flex items-center gap-4 text-xs text-gray-300">
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-user-line"></i>
+                                <span>David Lee</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-calendar-line"></i>
+                                <span>Oct 15, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Tech Card 6 -->
+                 <div class="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 bg-gray-900 h-96">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Tech">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
+                    
+                    <div class="absolute top-4 right-4">
+                        <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:text-red-500 hover:bg-white/30 transition-all">
+                            <i class="ri-heart-line text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <div class="mb-3">
+                            <span class="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">Space</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 leading-tight drop-shadow-md group-hover:text-indigo-300 transition-colors">Commercial Space Flight Milestones</h3>
+                        <div class="flex items-center gap-4 text-xs text-gray-300">
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-user-line"></i>
+                                <span>Jessica Wu</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i class="ri-calendar-line"></i>
+                                <span>Oct 12, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MORE TOPICS SECTION - TREE STYLE -->
+    <section class="py-24 bg-white" id="more-topics-tree-section">
+        <div class="container mx-auto max-w-7xl px-4">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="text-blue-600 font-bold tracking-wider uppercase text-sm">Explore More</span>
+                <h2 class="text-4xl font-bold text-gray-900 mt-2">Discover Other Topics</h2>
+                <p class="text-gray-500 mt-3 max-w-2xl mx-auto">
+                    Dive into our specialized coverage on energy markets, in-depth company reports, and exclusive industry analysis.
+                </p>
+            </div>
+
+            <!-- Tree Layout Container -->
+            <div class="relative">
+                <!-- The "Trunk" of the tree -->
+                <div class="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-gray-100 rounded-full hidden lg:block"></div>
+
+                <!-- Topics Branching Out -->
+                <div class="space-y-16">
+
+                    <!-- Branch 1: Energy (Left) -->
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                        <div class="lg:pr-12 lg:text-right">
+                            <div class="inline-block bg-red-100 text-red-600 p-6 rounded-3xl shadow-sm mb-6">
+                                <i class="ri-flashlight-line text-5xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-800">Energy News</h3>
+                            <p class="text-gray-500 mt-2 mb-6">Global market trends and renewable energy updates.</p>
+                            <a href="#" class="text-red-500 font-semibold hover:text-red-600 transition">View All Energy News &rarr;</a>
+                        </div>
+                        <div class="relative mt-8 lg:mt-0">
+                            <div class="absolute top-1/2 -translate-y-1/2 -left-6 w-3 h-3 bg-red-500 rounded-full hidden lg:block"></div>
+                            <div class="space-y-6">
+                                <!-- News Item 1 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1624953901718-e24ee7200b85?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-red-600 mb-1 leading-tight">Global Oil Prices Surge Amid Supply Concerns</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">Analysts predict continued volatility as geopolitical tensions rise in key production regions.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">Mark Hanson</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 15, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- News Item 2 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1664800390418-39a2b947a757?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-red-600 mb-1 leading-tight">Renewable Energy Investment Hits Record High</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">Solar and wind power projects attract massive capital inflow, signaling a shift in the energy landscape.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">Fiona Chen</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 14, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- News Item 3 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1555963962-ac878a821371?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-red-600 mb-1 leading-tight">The Future of Nuclear Fusion: A Breakthrough?</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">A new experimental reactor shows promising results, potentially unlocking clean, limitless energy.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">David Wallace</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 12, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 2: Reports (Right) -->
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                        <div class="lg:pl-12 lg:order-2">
+                            <div class="inline-block bg-green-100 text-green-600 p-6 rounded-3xl shadow-sm mb-6">
+                                <i class="ri-file-chart-line text-5xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-800">Special Reports</h3>
+                            <p class="text-gray-500 mt-2 mb-6">In-depth analysis and long-form investigations.</p>
+                            <a href="#" class="text-green-500 font-semibold hover:text-green-600 transition">View All Reports &rarr;</a>
+                        </div>
+                        <div class="relative mt-8 lg:mt-0 lg:order-1">
+                            <div class="absolute top-1/2 -translate-y-1/2 -right-6 w-3 h-3 bg-green-500 rounded-full hidden lg:block"></div>
+                            <div class="space-y-6">
+                                <!-- News Item 1 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-green-600 mb-1 leading-tight">2026 Economic Outlook: Navigating Uncertainty</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">An in-depth analysis of global economic trends, inflation forecasts, and market risks for the coming year.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">Editorial Team</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 10, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- News Item 2 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-green-600 mb-1 leading-tight">The AI Revolution in Healthcare</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">How artificial intelligence is transforming drug discovery, diagnostics, and patient care.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">Dr. Emily Carter</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 5, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- News Item 3 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-green-600 mb-1 leading-tight">The Gig Economy: A Double-Edged Sword</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">Exploring the benefits and drawbacks of the rising freelance workforce on labor markets.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">Johnathan Davis</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 2, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 3: Companies (Left) -->
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                        <div class="lg:pr-12 lg:text-right">
+                            <div class="inline-block bg-purple-100 text-purple-600 p-6 rounded-3xl shadow-sm mb-6">
+                                <i class="ri-building-4-line text-5xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-800">Company Insights</h3>
+                            <p class="text-gray-500 mt-2 mb-6">Corporate earnings, mergers, and market analysis.</p>
+                            <a href="#" class="text-purple-500 font-semibold hover:text-purple-600 transition">View All Company News &rarr;</a>
+                        </div>
+                        <div class="relative mt-8 lg:mt-0">
+                            <div class="absolute top-1/2 -translate-y-1/2 -left-6 w-3 h-3 bg-purple-500 rounded-full hidden lg:block"></div>
+                            <div class="space-y-6">
+                                <!-- News Item 1 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1556761175-b413da4b248b?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-purple-600 mb-1 leading-tight">TechCorp Announces Q4 Earnings Beat</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">The tech giant exceeded expectations with strong growth in its cloud computing and AI divisions.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">Sarah Miller</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 13, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- News Item 2 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1573496546038-1a4c736586a1?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-purple-600 mb-1 leading-tight">Innovate Inc. to Acquire BioGen Pharma</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">A landmark merger set to create a new powerhouse in the biotechnology sector.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">Alex Rodriguez</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 11, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- News Item 3 -->
+                                <a href="#" class="flex gap-4 items-start p-4 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-gray-100 transition-all group">
+                                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=150&q=80" class="w-24 h-24 object-cover rounded-xl" alt="News">
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-800 group-hover:text-purple-600 mb-1 leading-tight">GreenLeaf Foods Faces Supply Chain Challenges</h4>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-2">The sustainable food company is navigating logistical hurdles impacting its global distribution.</p>
+                                        <div class="flex items-center justify-between text-xs text-gray-400">
+                                            <span class="font-semibold">Jessica Tan</span>
+                                            <div class="flex items-center gap-2">
+                                                <span>Jan 9, 2026</span>
+                                                <i class="ri-heart-line hover:text-red-500 cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 5. TECHNOLOGY (Magazine/Grid) -->
-    <section class="section-padding bg-soft">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title"><span class="text-primary">///</span> Technology</h3>
-                <a href="#" class="btn btn-primary rounded-pill btn-sm">Reviews & AI</a>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <div class="card-overlay-style h-100" style="min-height: 400px; position: relative; overflow: hidden; border-radius: 12px;">
-                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800" alt="Tech" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay-content d-flex flex-column justify-content-end p-4" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); position: absolute; bottom: 0; left: 0; width: 100%;">
-                            <span class="badge bg-primary mb-2 align-self-start">AI Revolution</span>
-                            <h2 class="h3 fw-bold text-white mb-2">Generative AI: The next phase of creative work</h2>
-                            <p class="article-desc text-white-50 mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">From art to coding, artificial intelligence is reshaping how we create and interact with digital content.</p>
-                            <div class="article-footer border-top border-light border-opacity-25 pt-2 text-white-50">
-                                <span><i class="ri-pencil-line"></i> A. Turing</span>
-                                <span><i class="ri-calendar-line"></i> Jan 08</span>
-                                <i class="ri-heart-line cursor-pointer text-white"></i>
-                            </div>
-                        </div>
+    <!-- FOOTER -->
+    <footer class="oreix-footer position-relative">
+        <div class="footer-accent"></div>
+        <div class="container-fluid px-4 px-lg-5 position-relative">
+            <div class="row gy-5">
+                <div class="col-xl-3 col-lg-4">
+                    <a class="footer-logo" href="#">oreix<span>.news</span></a>
+                    <p class="footer-desc">Premium journalism, trusted sources, and real-time coverage of markets, tech, and policy—curated for decision makers.</p>
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <a href="#" class="footer-social"><i class="ri-facebook-fill"></i></a>
+                        <a href="#" class="footer-social"><i class="ri-twitter-x-line"></i></a>
+                        <a href="#" class="footer-social"><i class="ri-linkedin-fill"></i></a>
+                        <a href="#" class="footer-social"><i class="ri-instagram-line"></i></a>
+                        <a href="#" class="footer-social"><i class="ri-youtube-fill"></i></a>
+                        <a href="#" class="footer-social"><i class="ri-rss-line"></i></a>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap mt-3">
+                        <span class="footer-pill">24/7 Desk</span>
+                        <span class="footer-pill">Verified Sources</span>
+                        <span class="footer-pill">Breaking Alerts</span>
                     </div>
                 </div>
-                <div class="col-lg-6">
+
+                <div class="col-xl-6 col-lg-5">
                     <div class="row g-4">
-                        <div class="col-sm-6">
-                            <div class="article-card">
-                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400" alt="Tech">
-                                <h5 class="article-title fs-6">Cybersecurity trends to watch in 2026</h5>
-                                <p class="article-desc small">Protecting data in an interconnected world.</p>
-                                <div class="article-footer pt-2 mt-2 border-top">
-                                    <span class="small"><i class="ri-pencil-line"></i> K. Mitnick</span>
-                                    <span class="small"><i class="ri-time-line"></i> 2h</span>
-                                    <i class="ri-heart-line small"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="article-card">
-                                <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400" alt="Tech">
-                                <h5 class="article-title fs-6">The rise of decentralized finance apps</h5>
-                                <p class="article-desc small">How blockchain is changing banking forever.</p>
-                                <div class="article-footer pt-2 mt-2 border-top">
-                                    <span class="small"><i class="ri-pencil-line"></i> V. Buterin</span>
-                                    <span class="small"><i class="ri-time-line"></i> 4h</span>
-                                    <i class="ri-heart-line small"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="article-card">
-                                <img src="https://images.unsplash.com/photo-1531297461136-82af47129f57?w=400" alt="Tech">
-                                <h5 class="article-title fs-6">Smart Homes: Interconnectivity explained</h5>
-                                <p class="article-desc small">Making your living space work for you.</p>
-                                <div class="article-footer pt-2 mt-2 border-top">
-                                    <span class="small"><i class="ri-pencil-line"></i> T. Stark</span>
-                                    <span class="small"><i class="ri-time-line"></i> 6h</span>
-                                    <i class="ri-heart-line small"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="article-card">
-                                <img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400" alt="Tech">
-                                <h5 class="article-title fs-6">Top 5 Programming Languages this year</h5>
-                                <p class="article-desc small">Python continues to dominate the charts.</p>
-                                <div class="article-footer pt-2 mt-2 border-top">
-                                    <span class="small"><i class="ri-pencil-line"></i> L. Torvalds</span>
-                                    <span class="small"><i class="ri-time-line"></i> 8h</span>
-                                    <i class="ri-heart-line small"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 7. REPORTS (Document Style) -->
-    <section class="section-padding bg-light">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title">Reports & Documents</h3>
-                <a href="#" class="btn btn-outline-secondary rounded-pill btn-sm">PDF Library</a>
-            </div>
-            <div class="row g-4">
-                <div class="col-6 col-md-3">
-                    <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600" alt="Report">
-                        <h5 class="article-title fs-6">Q4 Financial Report 2025</h5>
-                        <p class="article-desc small">Detailed analysis of market performance and revenue streams.</p>
-                        <div class="article-footer border-top pt-2 mt-2">
-                             <span class="small"><i class="ri-user-follow-line"></i> FinDept</span>
-                             <span class="small"><i class="ri-time-line"></i> Jan 05</span>
-                             <i class="ri-heart-line small cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600" alt="Report">
-                        <h5 class="article-title fs-6">Sustainability Index</h5>
-                        <p class="article-desc small">Review of environmental impact goals and achievements.</p>
-                        <div class="article-footer border-top pt-2 mt-2">
-                             <span class="small"><i class="ri-user-follow-line"></i> GreenTm</span>
-                             <span class="small"><i class="ri-time-line"></i> Jan 04</span>
-                             <i class="ri-heart-line small cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600" alt="Report">
-                        <h5 class="article-title fs-6">Consumer Behavior</h5>
-                        <p class="article-desc small">Survey results from 10k participants across the globe.</p>
-                        <div class="article-footer border-top pt-2 mt-2">
-                             <span class="small"><i class="ri-user-follow-line"></i> MktTeam</span>
-                             <span class="small"><i class="ri-time-line"></i> Jan 03</span>
-                             <i class="ri-heart-line small cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                     <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600" alt="Report">
-                        <h5 class="article-title fs-6">Tech Growth Forecast</h5>
-                        <p class="article-desc small">Predictive models for the next decade of innovation.</p>
-                        <div class="article-footer border-top pt-2 mt-2">
-                             <span class="small"><i class="ri-user-follow-line"></i> AI_Bot</span>
-                             <span class="small"><i class="ri-time-line"></i> Jan 01</span>
-                             <i class="ri-heart-line small cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 9. POLITICS (Standard Layout) -->
-    <section class="section-padding bg-soft">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title">Politics</h3>
-            </div>
-            <div class="row g-5">
-                <div class="col-lg-8">
-                    <div class="article-card border-0 bg-transparent">
-                        <img src="https://images.unsplash.com/photo-1541872703-74c59636a2fd?w=800" class="w-100 rounded mb-3" alt="Parliament">
-                        <h2 class="article-title display-6 fw-bold mb-3">Parliament approves the new fiscal budget with a majority vote</h2>
-                        <p class="article-desc lead mb-3">In a session that lasted over 10 hours, the legislative body finalized the key components of the 2026/2027 national budget, focusing heavily on education and healthcare reforms.</p>
-                        <div class="article-footer pt-2 border-top">
-                            <span><i class="ri-map-pin-line"></i> Parliament House</span>
-                            <span><i class="ri-time-line"></i> Yesterday</span>
-                            <i class="ri-heart-line cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <h4 class="mb-3">Latest Updates</h4>
-                    <div class="d-flex flex-column gap-4">
-                        <div class="article-card">
-                            <h5 class="article-title col-12"><a href="#" class="text-dark text-decoration-none">Foreign Minister visits Europe to discuss trade agreements.</a></h5>
-                            <p class="article-desc small text-muted">Diplomatic ties strengthened.</p>
-                            <div class="article-footer border-top pt-2 mt-1">
-                                <span class="small"><i class="ri-user-line"></i> Staff</span>
-                                <span class="small"><i class="ri-time-line"></i> 1h ago</span>
-                                <i class="ri-heart-line small"></i>
-                            </div>
-                        </div>
-                        <div class="article-card">
-                            <h5 class="article-title col-12"><a href="#" class="text-dark text-decoration-none">New legislative proposal for digital privacy introduced.</a></h5>
-                            <p class="article-desc small text-muted">Protecting citizen data is priority.</p>
-                            <div class="article-footer border-top pt-2 mt-1">
-                                <span class="small"><i class="ri-user-line"></i> Tech Desk</span>
-                                <span class="small"><i class="ri-time-line"></i> 3h ago</span>
-                                <i class="ri-heart-line small"></i>
-                            </div>
-                        </div>
-                        <div class="article-card">
-                            <h5 class="article-title col-12"><a href="#" class="text-dark text-decoration-none">Election commission announces dates for municipal polls.</a></h5>
-                            <p class="article-desc small text-muted">Voter registration opens next week.</p>
-                            <div class="article-footer border-top pt-2 mt-1">
-                                <span class="small"><i class="ri-user-line"></i> E. Comm</span>
-                                <span class="small"><i class="ri-time-line"></i> 5h ago</span>
-                                <i class="ri-heart-line small"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 10. OPINION (Standard Layout) -->
-    <section class="section-padding">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title">Opinion</h3>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2?w=600" alt="Tech Opinion">
-                        <h4 class="article-title fs-5 mt-3">The future of AI is collaborative, not replacive</h4>
-                        <p class="article-desc">"Artificial intelligence isn't about replacing humans, but about amplifying our potential."</p>
-                        <div class="article-footer border-top pt-2 mt-2">
-                             <span><img src="https://i.pravatar.cc/150?img=68" class="rounded-circle me-1" width="20" height="20"> Dr. A. Turing</span>
-                             <span><i class="ri-time-line"></i> Today</span>
-                             <i class="ri-heart-line cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600" alt="Env Opinion">
-                        <h4 class="article-title fs-5 mt-3">Sustainable energy: The economic necessity</h4>
-                        <p class="article-desc">"It is no longer a choice, it will define the next century of power dynamics."</p>
-                        <div class="article-footer border-top pt-2 mt-2">
-                             <span><img src="https://i.pravatar.cc/150?img=47" class="rounded-circle me-1" width="20" height="20"> S. Connor</span>
-                             <span><i class="ri-time-line"></i> Yesterday</span>
-                             <i class="ri-heart-line cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                     <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600" alt="Edu Opinion">
-                        <h4 class="article-title fs-5 mt-3">Education systems must evolve now</h4>
-                        <p class="article-desc">"Memorization is obsolete in an age where information is universally accessible."</p>
-                        <div class="article-footer border-top pt-2 mt-2">
-                             <span><img src="https://i.pravatar.cc/150?img=32" class="rounded-circle me-1" width="20" height="20"> K. Robinson</span>
-                             <span><i class="ri-time-line"></i> 2 days ago</span>
-                             <i class="ri-heart-line cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 11. ENVIRONMENT (Green/Nature) -->
-    <section class="section-padding" style="background-color: #ecfdf5;">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper" style="border-color: #d1fae5;">
-                <h3 class="section-title text-success">Environment</h3>
-                <a href="#" class="btn btn-outline-success rounded-pill btn-sm">Eco Watch</a>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <div class="article-card mb-0 h-100 bg-transparent border-0">
-                         <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800" class="rounded w-100 mb-3" alt="Nature" style="height: 300px; object-fit: cover;">
-                         <h2 class="article-title fw-bold">Global reforestation initiative hits major milestone</h2>
-                         <p class="article-desc">The project has successfully planted over 10 million trees in critical zones across the Amazon.</p>
-                         <div class="article-footer pt-3 mt-auto border-top border-success border-opacity-25">
-                            <span><i class="ri-leaf-line text-success"></i> EcoTeam</span>
-                            <span><i class="ri-time-line"></i> 2h ago</span>
-                            <i class="ri-heart-line cursor-pointer text-success"></i>
-                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="d-flex flex-column gap-4 justify-content-center h-100">
-                        <div class="article-card bg-transparent">
-                             <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb7d5b43?w=600" class="rounded mb-2" alt="Eco" style="height: 150px; object-fit: cover; width: 100%;">
-                             <h4 class="article-title fw-bold fs-5">Plastic-free oceans: New cleanup tech deployed</h4>
-                             <p class="article-desc text-muted">Autonomous drones are filtering microplastics with 95% efficiency.</p>
-                             <div class="article-footer pt-2 border-top border-success border-opacity-25">
-                                <span class="small"><i class="ri-pencil-line"></i> OceanCleanup</span>
-                                <span class="small"><i class="ri-time-line"></i> 5h ago</span>
-                                <i class="ri-heart-line small cursor-pointer"></i>
-                             </div>
-                        </div>
-                        <div class="article-card bg-transparent">
-                             <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600" class="rounded mb-2" alt="Eco" style="height: 150px; object-fit: cover; width: 100%;">
-                             <h4 class="article-title fw-bold fs-5">Solar power adoption doubles in residential areas</h4>
-                             <p class="article-desc text-muted">Subsidies and lower costs drive the green shift.</p>
-                             <div class="article-footer pt-2 border-top border-success border-opacity-25">
-                                <span class="small"><i class="ri-pencil-line"></i> SunEnergy</span>
-                                <span class="small"><i class="ri-time-line"></i> 8h ago</span>
-                                <i class="ri-heart-line small cursor-pointer"></i>
-                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section-padding">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title">Featured Companies</h3>
-            </div>
-            <div class="row g-4 align-items-center mb-5">
-                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/368px-Google_2015_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
-                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/603px-Amazon_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
-                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/1000px-IBM_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
-                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/439px-Microsoft_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
-                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/799px-Netflix_2015_logo.svg.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
-                <div class="col-6 col-md-2 text-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/600px-Tesla_logo.png" class="img-fluid" style="max-height: 40px; opacity: 0.7;" alt="Logo"></div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card bg-dark text-white border-0 overflow-hidden h-100">
-                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800" class="card-img opacity-50 h-100 object-fit-cover" alt="Biz">
-                        <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
-                            <span class="badge bg-warning text-dark align-self-start mb-2">Spotlight</span>
-                            <h5 class="article-title card-title fs-3 fw-bold text-white">Company of the Month</h5>
-                            <p class="article-desc card-text text-white-50">How "TechNova" transformed from a startup to a unicorn in just 2 years with innovative leadership.</p>
-                            <div class="article-footer border-top border-white border-opacity-25 pt-2 mt-2 text-white-50">
-                                <span><i class="ri-user-star-line"></i> Editor's Pick</span>
-                                <span><i class="ri-time-line"></i> Jan 01</span>
-                                <i class="ri-heart-line text-white cursor-pointer"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                 <div class="col-lg-6">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item py-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="badge bg-light text-dark border">Telco</span>
-                                <small class="text-muted"><i class="ri-time-line"></i> 2h</small>
-                            </div>
-                            <h5 class="article-title fs-6 mb-1"><span class="fw-bold text-danger">Vodafone</span> expands 5G network covering 90% of delta.</h5>
-                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                <small class="text-muted"><i class="ri-pencil-line"></i> Tech Team</small>
-                                <i class="ri-heart-line text-muted cursor-pointer"></i>
-                            </div>
-                        </li>
-                        <li class="list-group-item py-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="badge bg-light text-dark border">Real Estate</span>
-                                <small class="text-muted"><i class="ri-time-line"></i> 5h</small>
-                            </div>
-                             <h5 class="article-title fs-6 mb-1"><span class="fw-bold text-primary">Emaar Misr</span> announces new coastal project worth billions.</h5>
-                              <div class="d-flex justify-content-between align-items-center mt-2">
-                                <small class="text-muted"><i class="ri-pencil-line"></i> RE Desk</small>
-                                <i class="ri-heart-line text-muted cursor-pointer"></i>
-                            </div>
-                        </li>
-                        <li class="list-group-item py-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="badge bg-light text-dark border">Transport</span>
-                                <small class="text-muted"><i class="ri-time-line"></i> 8h</small>
-                            </div>
-                             <h5 class="article-title fs-6 mb-1"><span class="fw-bold text-danger">Swvl</span> returns to profitability in Q1 after restructure.</h5>
-                              <div class="d-flex justify-content-between align-items-center mt-2">
-                                <small class="text-muted"><i class="ri-pencil-line"></i> Biz Analyst</small>
-                                <i class="ri-heart-line text-muted cursor-pointer"></i>
-                            </div>
-                        </li>
-                        <li class="list-group-item py-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="badge bg-light text-dark border">E-com</span>
-                                <small class="text-muted"><i class="ri-time-line"></i> 1d</small>
-                            </div>
-                             <h5 class="article-title fs-6 mb-1"><span class="fw-bold text-warning">Jumia</span> launches heavy equipment marketplace for B2B.</h5>
-                              <div class="d-flex justify-content-between align-items-center mt-2">
-                                <small class="text-muted"><i class="ri-pencil-line"></i> Market Watch</small>
-                                <i class="ri-heart-line text-muted cursor-pointer"></i>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section-padding">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title" style="color: #f59e0b;">Energy & Power</h3>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="border-top border-4 border-warning pt-3 h-100 d-flex flex-column justify-content-between">
-                        <div>
-                            <h2 class="display-6 fw-bold mb-3 article-title">Green Shift</h2>
-                            <p class="article-desc text-muted">Countries are racing towards net-zero emissions. How is the energy sector adapting to these new ambitious goals?</p>
-                            <ul class="list-unstyled mt-4 d-flex flex-column gap-2">
-                                <li class="d-flex align-items-center"><i class="ri-arrow-right-line text-warning me-2"></i> Solar farm expansions</li>
-                                <li class="d-flex align-items-center"><i class="ri-arrow-right-line text-warning me-2"></i> Wind energy investments</li>
-                                <li class="d-flex align-items-center"><i class="ri-arrow-right-line text-warning me-2"></i> Nuclear power safety</li>
+                        <div class="col-6 col-md-4">
+                            <h6 class="footer-title">Sections</h6>
+                            <ul class="footer-links">
+                                <li><a href="#">World News</a></li>
+                                <li><a href="#">Markets & Banking</a></li>
+                                <li><a href="#">Technology</a></li>
+                                <li><a href="#">Real Estate</a></li>
+                                <li><a href="#">Energy</a></li>
                             </ul>
                         </div>
-                        <div class="article-footer border-top pt-2 mt-4">
-                             <span class="small"><i class="ri-flashlight-line text-warning"></i> Energy Dpt.</span>
-                             <span class="small"><i class="ri-time-line"></i> 4h ago</span>
-                             <i class="ri-heart-line small cursor-pointer"></i>
+                        <div class="col-6 col-md-4">
+                            <h6 class="footer-title">Coverage</h6>
+                            <ul class="footer-links">
+                                <li><a href="#">Special Reports</a></li>
+                                <li><a href="#">Companies</a></li>
+                                <li><a href="#">Politics</a></li>
+                                <li><a href="#">Climate</a></li>
+                                <li><a href="#">Opinions</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <h6 class="footer-title">Company</h6>
+                            <ul class="footer-links">
+                                <li><a href="#">About</a></li>
+                                <li><a href="#">Advertise</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Terms</a></li>
+                                <li><a href="#">Contact</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="article-card h-100">
-                                <div class="position-relative overflow-hidden rounded-3 mb-3">
-                                     <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600" class="w-100 object-fit-cover rounded-3" style="height: 250px;" alt="Wind">
-                                     <div class="position-absolute dark-overlay-bottom p-3">
-                                        <h5 class="text-white mb-0 article-title">Wind Assets Booming</h5>
-                                     </div>
-                                </div>
-                                <p class="article-desc small text-muted">Offshore wind farms see record investment in 2026.</p>
-                                <div class="article-footer border-top pt-2 mt-auto">
-                                     <span class="small"><i class="ri-user-line"></i> Analyst A</span>
-                                     <span class="small"><i class="ri-time-line"></i> 1 day ago</span>
-                                     <i class="ri-heart-line small cursor-pointer"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                             <div class="article-card h-100">
-                                <div class="position-relative overflow-hidden rounded-3 mb-3">
-                                     <img src="https://images.unsplash.com/photo-1566093097221-ac2335b09e70?w=600" class="w-100 object-fit-cover rounded-3" style="height: 250px;" alt="Solar">
-                                     <div class="position-absolute dark-overlay-bottom p-3">
-                                        <h5 class="text-white mb-0 article-title">Solar Tech Innovation</h5>
-                                     </div>
-                                </div>
-                                <p class="article-desc small text-muted">New panels achieve 30% higher efficiency rates.</p>
-                                <div class="article-footer border-top pt-2 mt-auto">
-                                     <span class="small"><i class="ri-user-line"></i> Sci. B</span>
-                                     <span class="small"><i class="ri-time-line"></i> 2 days ago</span>
-                                     <i class="ri-heart-line small cursor-pointer"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section-padding">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title">Banks & Stock</h3>
-            </div>
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <div class="p-4 border rounded-3 text-center bg-light h-100 d-flex flex-column justify-content-center">
-                        <h1 class="display-5 fw-bold text-success mb-0 article-title">+1.2%</h1>
-                        <p class="article-desc text-muted mb-0 fw-bold">EGX 30 Index</p>
-                         <div class="article-footer justify-content-center border-top w-100 pt-2 mt-3">
-                             <span class="small"><i class="ri-time-line"></i> Live</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="row g-3">
-                         <div class="col-sm-6 col-md-4">
-                             <div class="article-card p-3 border rounded-3 h-100">
-                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                     <span class="fw-bold article-title">CIB Bank</span>
-                                     <span class="badge bg-success">+0.5%</span>
-                                 </div>
-                                 <div class="small article-desc text-muted mb-2">Trading at 75.20 EGP</div>
-                                 <div class="article-footer border-top pt-2 mt-auto">
-                                     <span class="small text-muted"><i class="ri-funds-line"></i> Stock</span>
-                                      <i class="ri-heart-line text-muted cursor-pointer"></i>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-sm-6 col-md-4">
-                             <div class="article-card p-3 border rounded-3 h-100">
-                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                     <span class="fw-bold article-title">NBE</span>
-                                     <span class="badge bg-secondary">0.0%</span>
-                                 </div>
-                                 <div class="small article-desc text-muted mb-2">Stable Interest Rates</div>
-                                  <div class="article-footer border-top pt-2 mt-auto">
-                                     <span class="small text-muted"><i class="ri-bank-line"></i> Bank</span>
-                                      <i class="ri-heart-line text-muted cursor-pointer"></i>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-sm-6 col-md-4">
-                             <div class="article-card p-3 border rounded-3 h-100">
-                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                     <span class="fw-bold article-title">FinTech Co</span>
-                                     <span class="badge bg-danger">-1.2%</span>
-                                 </div>
-                                 <div class="small article-desc text-muted mb-2">Correcting after rally</div>
-                                  <div class="article-footer border-top pt-2 mt-auto">
-                                     <span class="small text-muted"><i class="ri-smartphone-line"></i> Tech</span>
-                                      <i class="ri-heart-line text-muted cursor-pointer"></i>
-                                 </div>
-                             </div>
-                         </div>
-                         <!-- More stocks -->
-                         <div class="col-12">
-                             <div class="p-3 rounded-3 bg-primary bg-opacity-10 d-flex align-items-center text-primary justify-content-between">
-                                 <div class="d-flex align-items-center">
-                                     <i class="ri-information-line fs-4 me-3"></i>
-                                     <div>
-                                         <strong>Market Update:</strong> Banking sector shows resilience amid global fluctuations.
-                                     </div>
-                                 </div>
-                                 <i class="ri-heart-line cursor-pointer"></i>
-                             </div>
-                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- 2. REAL ESTATE (Grid Layout / Light BG) -->
-    <section class="section-padding bg-soft">
-        <div class="container-fluid px-lg-5">
-            <div class="section-title-wrapper">
-                <h3 class="section-title">Real Estate</h3>
-                <a href="#" class="btn btn-outline-dark rounded-pill btn-sm">Market Watch</a>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600" alt="Real Estate">
-                        <h4 class="article-title fs-5">Modern Villas in New Capital city gain popularity</h4>
-                        <p class="article-desc">Luxury living reaches new heights with these modern designs.</p>
-                        <div class="article-footer">
-                            <span><i class="ri-pencil-line"></i> John Doe</span>
-                            <span><i class="ri-calendar-line"></i> Jan 14</span>
-                            <i class="ri-heart-line cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                     <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=600" alt="Real Estate">
-                        <h4 class="article-title fs-5">Housing prices expected to stabilize in Q3</h4>
-                        <p class="article-desc">Market analysis shows a steady correction phase.</p>
-                        <div class="article-footer">
-                            <span><i class="ri-pencil-line"></i> H. Potter</span>
-                            <span><i class="ri-calendar-line"></i> Jan 13</span>
-                            <i class="ri-heart-line cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                     <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600" alt="Real Estate">
-                        <h4 class="article-title fs-5">Green sustainable buildings: The future of living</h4>
-                        <p class="article-desc">How eco-friendly architecture is saving costs.</p>
-                        <div class="article-footer">
-                            <span><i class="ri-pencil-line"></i> G. Thunberg</span>
-                            <span><i class="ri-calendar-line"></i> Jan 12</span>
-                            <i class="ri-heart-line cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                     <div class="article-card">
-                        <img src="https://images.unsplash.com/photo-1484154218962-a1c00207bf9a?w=600" alt="Real Estate">
-                        <h4 class="article-title fs-5">Top 10 Interior design trends for 2026</h4>
-                        <p class="article-desc">Minimalism meets functionality in the new year.</p>
-                        <div class="article-footer">
-                            <span><i class="ri-pencil-line"></i> A. Design</span>
-                            <span><i class="ri-calendar-line"></i> Jan 10</span>
-                            <i class="ri-heart-line cursor-pointer"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-  
+                <div class="col-xl-3 col-lg-3">
+                    <div class="footer-cta">
+                        <p class="cta-label">Stay ahead</p>
+                        <h5 class="cta-title">Get the daily briefing in your inbox</h5>
+                        <form class="footer-form" action="#" method="post">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="ri-mail-line"></i></span>
+                                <input type="email" class="form-control" placeholder="you@example.com" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mt-3">Subscribe</button>
+                        </form>
+                        <small class="text-muted d-block mt-2">No spam. Unsubscribe anytime.</small>
+                        <div class="footer-hotline mt-3">
+                            <i class="ri-headphone-line"></i>
+                            <div>
+                                <span class="d-block fw-bold text-white">Newsroom Hotline</span>
+                                <small class="text-muted">+20 (0) 155 000 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4 mt-5 pt-4 footer-meta">
+                <div class="col-lg-4 d-flex flex-wrap align-items-center gap-3">
+                    <span class="pill-live">Live</span>
+                    <span class="text-muted">Round-the-clock coverage with verified updates.</span>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex flex-wrap gap-2 footer-tags">
+                        <span>#AI</span><span>#Energy</span><span>#Elections</span><span>#Startups</span><span>#Markets</span><span>#Climate</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end text-muted">© 2026 oreix.news — All rights reserved</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchBtn = document.getElementById('searchTriggerFromMenu');
+            const overlay = document.getElementById('searchOverlay');
+            const input = overlay ? overlay.querySelector('.overlay-search-input') : null;
+            const offcanvasEl = document.getElementById('mobileMenu');
+
+            if (searchBtn && overlay) {
+                searchBtn.addEventListener('click', function () {
+                    if (typeof bootstrap !== 'undefined' && offcanvasEl) {
+                        const instance = bootstrap.Offcanvas.getInstance(offcanvasEl) || new bootstrap.Offcanvas(offcanvasEl);
+                        instance.hide();
+                    }
+                    overlay.classList.add('active');
+                    setTimeout(() => { if (input) input.focus(); }, 120);
+                });
+            }
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // --- Header & General Scripts ---
-        const header = document.querySelector('.main-header');
-        window.addEventListener('scroll', () => {
-            header.classList.toggle('scrolled', window.pageYOffset > 50);
-        });
-
-        // Dropdown hover (Desktop only)
-        // Removed as per request
-
-        // --- Date & Time Script ---
-        function updateDateTime() {
-            const now = new Date();
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const timeOptions = { hour: '2-digit', minute: '2-digit' };
-            
-            const dateElem = document.getElementById('currentDate');
-            const timeElem = document.getElementById('currentTime');
-            
-            if(dateElem) dateElem.textContent = now.toLocaleDateString('en-US', dateOptions);
-            if(timeElem) timeElem.textContent = now.toLocaleTimeString('en-US', timeOptions);
-        }
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-
-
-        // --- News Ticker Script ---
-        document.addEventListener('DOMContentLoaded', function() {
-            const newsData = [
-                "New study shows coffee might actually help you live longer.",
-                "Apple's latest iOS update includes these hidden features.",
-                "Global markets rally as tech stocks hit record highs.",
-                "SpaceX successfully launches world's most powerful rocket."
-            ];
-
-            const tickerContainer = document.getElementById('newsTickerBar');
-            const headlineDisplay = document.getElementById('headlineDisplay');
-            const closeBtn = document.getElementById('tickerCloseBtn');
-            let currentIndex = 0;
-            let intervalId;
-
-            function rotateHeadline() {
-                headlineDisplay.classList.add('exit-headline');
-                headlineDisplay.classList.remove('current-headline');
-                
-                setTimeout(() => {
-                    currentIndex = (currentIndex + 1) % newsData.length;
-                    headlineDisplay.textContent = newsData[currentIndex];
-                    headlineDisplay.classList.remove('exit-headline');
-                    void headlineDisplay.offsetWidth; // Trigger reflow
-                    headlineDisplay.classList.add('current-headline');
-                }, 500);
-            }
-
-            if (newsData.length > 0) headlineDisplay.textContent = newsData[0];
-            intervalId = setInterval(rotateHeadline, 10000);
-
-            closeBtn.addEventListener('click', function() {
-                clearInterval(intervalId);
-                tickerContainer.classList.add('closed');
-                document.body.style.paddingBottom = '0';
-            });
-        });
-
-        // --- Search Overlay Script ---
-        const searchTrigger = document.getElementById('searchTrigger');
-        const searchTriggerMobile = document.getElementById('searchTriggerMobile');
-        const searchOverlay = document.getElementById('searchOverlay');
-        const closeSearchOverlay = document.getElementById('closeSearchOverlay');
-        const searchInput = document.querySelector('.overlay-search-input');
-
-        function openSearch() {
-            searchOverlay.classList.add('active');
-            setTimeout(() => searchInput.focus(), 100);
-        }
-
-        if(searchOverlay && closeSearchOverlay) {
-            if(searchTrigger) searchTrigger.addEventListener('click', openSearch);
-            if(searchTriggerMobile) searchTriggerMobile.addEventListener('click', openSearch);
-
-            closeSearchOverlay.addEventListener('click', () => {
-                searchOverlay.classList.remove('active');
-            });
-
-            // Close on Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
-                    searchOverlay.classList.remove('active');
-                }
-            });
-        }
-
-        // --- Social Expand Script ---
-        const socialToggleBtn = document.getElementById('socialToggleBtn');
-        const socialGroup = document.getElementById('socialGroup');
-        if(socialToggleBtn && socialGroup){
-            socialToggleBtn.addEventListener('click', () => {
-                socialGroup.classList.toggle('active');
-            });
-        }
-    </script>
 </body>
 </html>
